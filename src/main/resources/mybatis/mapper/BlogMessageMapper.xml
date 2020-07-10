@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lhamster.mapper.BlogMessageMapper" >
+  <resultMap id="BaseResultMap" type="com.lhamster.domain.BlogMessage" >
+    <id column="mes_id" property="mesId" jdbcType="INTEGER" />
+    <result column="mes_content" property="mesContent" jdbcType="VARCHAR" />
+    <result column="mes_likecount" property="mesLikecount" jdbcType="INTEGER" />
+    <result column="mes_mestime" property="mesMestime" jdbcType="TIMESTAMP" />
+    <result column="mes_top" property="mesTop" jdbcType="BIT" />
+    <result column="mes_user_id" property="mesUserId" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from blog_message
+    where mes_id = #{mesId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lhamster.domain.BlogMessage" >
+    insert into blog_message (mes_id, mes_content, mes_likecount, 
+      mes_mestime, mes_top, mes_user_id
+      )
+    values (#{mesId,jdbcType=INTEGER}, #{mesContent,jdbcType=VARCHAR}, #{mesLikecount,jdbcType=INTEGER}, 
+      #{mesMestime,jdbcType=TIMESTAMP}, #{mesTop,jdbcType=BIT}, #{mesUserId,jdbcType=INTEGER}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogMessage" >
+    update blog_message
+    set mes_content = #{mesContent,jdbcType=VARCHAR},
+      mes_likecount = #{mesLikecount,jdbcType=INTEGER},
+      mes_mestime = #{mesMestime,jdbcType=TIMESTAMP},
+      mes_top = #{mesTop,jdbcType=BIT},
+      mes_user_id = #{mesUserId,jdbcType=INTEGER}
+    where mes_id = #{mesId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select mes_id, mes_content, mes_likecount, mes_mestime, mes_top, mes_user_id
+    from blog_message
+    where mes_id = #{mesId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select mes_id, mes_content, mes_likecount, mes_mestime, mes_top, mes_user_id
+    from blog_message
+  </select>
+</mapper>

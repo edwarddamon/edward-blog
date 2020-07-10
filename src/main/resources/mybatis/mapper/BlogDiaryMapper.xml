@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lhamster.mapper.BlogDiaryMapper" >
+  <resultMap id="BaseResultMap" type="com.lhamster.domain.BlogDiary" >
+    <id column="d_id" property="dId" jdbcType="INTEGER" />
+    <result column="d_diarytime" property="dDiarytime" jdbcType="TIMESTAMP" />
+    <result column="d_picture" property="dPicture" jdbcType="VARCHAR" />
+    <result column="d_content" property="dContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from blog_diary
+    where d_id = #{dId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lhamster.domain.BlogDiary" >
+    insert into blog_diary (d_id, d_diarytime, d_picture, 
+      d_content)
+    values (#{dId,jdbcType=INTEGER}, #{dDiarytime,jdbcType=TIMESTAMP}, #{dPicture,jdbcType=VARCHAR}, 
+      #{dContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogDiary" >
+    update blog_diary
+    set d_diarytime = #{dDiarytime,jdbcType=TIMESTAMP},
+      d_picture = #{dPicture,jdbcType=VARCHAR},
+      d_content = #{dContent,jdbcType=LONGVARCHAR}
+    where d_id = #{dId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select d_id, d_diarytime, d_picture, d_content
+    from blog_diary
+    where d_id = #{dId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select d_id, d_diarytime, d_picture, d_content
+    from blog_diary
+  </select>
+</mapper>

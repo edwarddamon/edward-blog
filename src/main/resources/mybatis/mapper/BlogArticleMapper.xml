@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lhamster.mapper.BlogArticleMapper" >
+  <resultMap id="BaseResultMap" type="com.lhamster.domain.BlogArticle" >
+    <id column="a_id" property="aId" jdbcType="INTEGER" />
+    <result column="a_title" property="aTitle" jdbcType="VARCHAR" />
+    <result column="a_createtime" property="aCreatetime" jdbcType="TIMESTAMP" />
+    <result column="a_likecount" property="aLikecount" jdbcType="INTEGER" />
+    <result column="a_visitcount" property="aVisitcount" jdbcType="INTEGER" />
+    <result column="a_status" property="aStatus" jdbcType="BIT" />
+    <result column="a_picture" property="aPicture" jdbcType="VARCHAR" />
+    <result column="a_cate_id" property="aCateId" jdbcType="INTEGER" />
+    <result column="a_user_id" property="aUserId" jdbcType="INTEGER" />
+    <result column="a_content" property="aContent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from blog_article
+    where a_id = #{aId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lhamster.domain.BlogArticle" >
+    insert into blog_article (a_id, a_title, a_createtime, 
+      a_likecount, a_visitcount, a_status, 
+      a_picture, a_cate_id, a_user_id, 
+      a_content)
+    values (#{aId,jdbcType=INTEGER}, #{aTitle,jdbcType=VARCHAR}, #{aCreatetime,jdbcType=TIMESTAMP}, 
+      #{aLikecount,jdbcType=INTEGER}, #{aVisitcount,jdbcType=INTEGER}, #{aStatus,jdbcType=BIT}, 
+      #{aPicture,jdbcType=VARCHAR}, #{aCateId,jdbcType=INTEGER}, #{aUserId,jdbcType=INTEGER}, 
+      #{aContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogArticle" >
+    update blog_article
+    set a_title = #{aTitle,jdbcType=VARCHAR},
+      a_createtime = #{aCreatetime,jdbcType=TIMESTAMP},
+      a_likecount = #{aLikecount,jdbcType=INTEGER},
+      a_visitcount = #{aVisitcount,jdbcType=INTEGER},
+      a_status = #{aStatus,jdbcType=BIT},
+      a_picture = #{aPicture,jdbcType=VARCHAR},
+      a_cate_id = #{aCateId,jdbcType=INTEGER},
+      a_user_id = #{aUserId,jdbcType=INTEGER},
+      a_content = #{aContent,jdbcType=LONGVARCHAR}
+    where a_id = #{aId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select a_id, a_title, a_createtime, a_likecount, a_visitcount, a_status, a_picture, 
+    a_cate_id, a_user_id, a_content
+    from blog_article
+    where a_id = #{aId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select a_id, a_title, a_createtime, a_likecount, a_visitcount, a_status, a_picture, 
+    a_cate_id, a_user_id, a_content
+    from blog_article
+  </select>
+</mapper>

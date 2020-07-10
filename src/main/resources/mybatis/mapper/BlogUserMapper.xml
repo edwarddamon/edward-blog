@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lhamster.mapper.BlogUserMapper" >
+  <resultMap id="BaseResultMap" type="com.lhamster.domain.BlogUser" >
+    <id column="u_id" property="uId" jdbcType="INTEGER" />
+    <result column="u_email" property="uEmail" jdbcType="VARCHAR" />
+    <result column="u_password" property="uPassword" jdbcType="VARCHAR" />
+    <result column="u_nickname" property="uNickname" jdbcType="VARCHAR" />
+    <result column="u_headpicture" property="uHeadpicture" jdbcType="VARCHAR" />
+    <result column="u_sex" property="uSex" jdbcType="BIT" />
+    <result column="u_phone" property="uPhone" jdbcType="VARCHAR" />
+    <result column="u_birthday" property="uBirthday" jdbcType="TIMESTAMP" />
+    <result column="u_admin" property="uAdmin" jdbcType="BIT" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from blog_user
+    where u_id = #{uId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lhamster.domain.BlogUser" >
+    insert into blog_user (u_id, u_email, u_password, 
+      u_nickname, u_headpicture, u_sex, 
+      u_phone, u_birthday, u_admin
+      )
+    values (#{uId,jdbcType=INTEGER}, #{uEmail,jdbcType=VARCHAR}, #{uPassword,jdbcType=VARCHAR}, 
+      #{uNickname,jdbcType=VARCHAR}, #{uHeadpicture,jdbcType=VARCHAR}, #{uSex,jdbcType=BIT}, 
+      #{uPhone,jdbcType=VARCHAR}, #{uBirthday,jdbcType=TIMESTAMP}, #{uAdmin,jdbcType=BIT}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogUser" >
+    update blog_user
+    set u_email = #{uEmail,jdbcType=VARCHAR},
+      u_password = #{uPassword,jdbcType=VARCHAR},
+      u_nickname = #{uNickname,jdbcType=VARCHAR},
+      u_headpicture = #{uHeadpicture,jdbcType=VARCHAR},
+      u_sex = #{uSex,jdbcType=BIT},
+      u_phone = #{uPhone,jdbcType=VARCHAR},
+      u_birthday = #{uBirthday,jdbcType=TIMESTAMP},
+      u_admin = #{uAdmin,jdbcType=BIT}
+    where u_id = #{uId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select u_id, u_email, u_password, u_nickname, u_headpicture, u_sex, u_phone, u_birthday, 
+    u_admin
+    from blog_user
+    where u_id = #{uId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select u_id, u_email, u_password, u_nickname, u_headpicture, u_sex, u_phone, u_birthday, 
+    u_admin
+    from blog_user
+  </select>
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lhamster.mapper.BlogFriendblogMapper" >
+  <resultMap id="BaseResultMap" type="com.lhamster.domain.BlogFriendblog" >
+    <id column="f_id" property="fId" jdbcType="INTEGER" />
+    <result column="f_name" property="fName" jdbcType="VARCHAR" />
+    <result column="f_url" property="fUrl" jdbcType="VARCHAR" />
+    <result column="f_status" property="fStatus" jdbcType="INTEGER" />
+    <result column="f_backinfo" property="fBackinfo" jdbcType="VARCHAR" />
+    <result column="f_friendblogtime" property="fFriendblogtime" jdbcType="TIMESTAMP" />
+    <result column="f_user_id" property="fUserId" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from blog_friendblog
+    where f_id = #{fId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lhamster.domain.BlogFriendblog" >
+    insert into blog_friendblog (f_id, f_name, f_url, 
+      f_status, f_backinfo, f_friendblogtime, 
+      f_user_id)
+    values (#{fId,jdbcType=INTEGER}, #{fName,jdbcType=VARCHAR}, #{fUrl,jdbcType=VARCHAR}, 
+      #{fStatus,jdbcType=INTEGER}, #{fBackinfo,jdbcType=VARCHAR}, #{fFriendblogtime,jdbcType=TIMESTAMP}, 
+      #{fUserId,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogFriendblog" >
+    update blog_friendblog
+    set f_name = #{fName,jdbcType=VARCHAR},
+      f_url = #{fUrl,jdbcType=VARCHAR},
+      f_status = #{fStatus,jdbcType=INTEGER},
+      f_backinfo = #{fBackinfo,jdbcType=VARCHAR},
+      f_friendblogtime = #{fFriendblogtime,jdbcType=TIMESTAMP},
+      f_user_id = #{fUserId,jdbcType=INTEGER}
+    where f_id = #{fId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select f_id, f_name, f_url, f_status, f_backinfo, f_friendblogtime, f_user_id
+    from blog_friendblog
+    where f_id = #{fId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select f_id, f_name, f_url, f_status, f_backinfo, f_friendblogtime, f_user_id
+    from blog_friendblog
+  </select>
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lhamster.mapper.BlogTagMapper" >
+  <resultMap id="BaseResultMap" type="com.lhamster.domain.BlogTag" >
+    <id column="tag_id" property="tagId" jdbcType="INTEGER" />
+    <result column="tag_content" property="tagContent" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from blog_tag
+    where tag_id = #{tagId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lhamster.domain.BlogTag" >
+    insert into blog_tag (tag_id, tag_content)
+    values (#{tagId,jdbcType=INTEGER}, #{tagContent,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogTag" >
+    update blog_tag
+    set tag_content = #{tagContent,jdbcType=VARCHAR}
+    where tag_id = #{tagId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select tag_id, tag_content
+    from blog_tag
+    where tag_id = #{tagId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select tag_id, tag_content
+    from blog_tag
+  </select>
+</mapper>

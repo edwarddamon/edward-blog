@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lhamster.mapper.BlogCategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.lhamster.domain.BlogCategory" >
+    <id column="cate_id" property="cateId" jdbcType="INTEGER" />
+    <result column="cate_name" property="cateName" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from blog_category
+    where cate_id = #{cateId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lhamster.domain.BlogCategory" >
+    insert into blog_category (cate_id, cate_name)
+    values (#{cateId,jdbcType=INTEGER}, #{cateName,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogCategory" >
+    update blog_category
+    set cate_name = #{cateName,jdbcType=VARCHAR}
+    where cate_id = #{cateId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select cate_id, cate_name
+    from blog_category
+    where cate_id = #{cateId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select cate_id, cate_name
+    from blog_category
+  </select>
+</mapper>

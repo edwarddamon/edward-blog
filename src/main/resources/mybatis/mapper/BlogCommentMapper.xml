@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lhamster.mapper.BlogCommentMapper" >
+  <resultMap id="BaseResultMap" type="com.lhamster.domain.BlogComment" >
+    <id column="com_id" property="comId" jdbcType="INTEGER" />
+    <result column="com_content" property="comContent" jdbcType="VARCHAR" />
+    <result column="com_comtime" property="comComtime" jdbcType="TIMESTAMP" />
+    <result column="com_likecount" property="comLikecount" jdbcType="INTEGER" />
+    <result column="com_com_id" property="comComId" jdbcType="INTEGER" />
+    <result column="com_article_id" property="comArticleId" jdbcType="INTEGER" />
+    <result column="com_message_id" property="comMessageId" jdbcType="INTEGER" />
+    <result column="com_user_id" property="comUserId" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from blog_comment
+    where com_id = #{comId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.lhamster.domain.BlogComment" >
+    insert into blog_comment (com_id, com_content, com_comtime, 
+      com_likecount, com_com_id, com_article_id, 
+      com_message_id, com_user_id)
+    values (#{comId,jdbcType=INTEGER}, #{comContent,jdbcType=VARCHAR}, #{comComtime,jdbcType=TIMESTAMP}, 
+      #{comLikecount,jdbcType=INTEGER}, #{comComId,jdbcType=INTEGER}, #{comArticleId,jdbcType=INTEGER}, 
+      #{comMessageId,jdbcType=INTEGER}, #{comUserId,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogComment" >
+    update blog_comment
+    set com_content = #{comContent,jdbcType=VARCHAR},
+      com_comtime = #{comComtime,jdbcType=TIMESTAMP},
+      com_likecount = #{comLikecount,jdbcType=INTEGER},
+      com_com_id = #{comComId,jdbcType=INTEGER},
+      com_article_id = #{comArticleId,jdbcType=INTEGER},
+      com_message_id = #{comMessageId,jdbcType=INTEGER},
+      com_user_id = #{comUserId,jdbcType=INTEGER}
+    where com_id = #{comId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select com_id, com_content, com_comtime, com_likecount, com_com_id, com_article_id, 
+    com_message_id, com_user_id
+    from blog_comment
+    where com_id = #{comId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select com_id, com_content, com_comtime, com_likecount, com_com_id, com_article_id, 
+    com_message_id, com_user_id
+    from blog_comment
+  </select>
+</mapper>
