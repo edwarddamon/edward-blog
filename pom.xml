@@ -78,7 +78,12 @@
             <artifactId>pagehelper</artifactId>
             <version>4.1.4</version>
         </dependency>
-
+        <!--腾讯云短信需要用到的依赖-->
+        <dependency>
+            <groupId>com.tencentcloudapi</groupId>
+            <artifactId>tencentcloud-sdk-java</artifactId>
+            <version>3.1.62</version>
+        </dependency>
     </dependencies>
 
     <build>

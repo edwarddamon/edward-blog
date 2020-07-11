@@ -10,13 +10,20 @@ public enum ResultCode {
     /* 错误状态码 */
     FAIL(-1, "操作失败！"),
 
-    /*用户登录：2001-2999*/
+    /*短信错误：1000-1999*/
+    SMS_SEND_FAILED(1000, "短信发送失败"),
+    SMS_SEND_UNKNOWERROR(1001, "短信发送失败，未知错误"),
+    SMS_SEND_SUCCESS(1002, "短信发送成功"),
+
+    /*注册/用户登录：2001-2999*/
     USER_LOGIN_SUCCESS(2000, "登陆成功"),
     USER_NOT_LOGGED_IN(2001, "用户未登录，请先登录"),
     USER_LOGIN_ERROR(2002, "用户名或密码错误"),
+    USER_REGISTER_EXISTED(2003, "该手机号已存在"),
 
     /*系统错误：3000-3999*/
     SYSTEM_UNKNOWN_TOKEN(3000, "未知错误"),
+    SYSTEM_UNKNOWN_CHECKED(3001, "检验失败"),
 
     /*token权限错误：4000-4999*/
     PERMISSION_TOEKN_CREATE_FAILE(4000, "签名失败"),
