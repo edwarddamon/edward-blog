@@ -114,10 +114,8 @@ public class UserController {
     /**
      * 登录
      *
-     * @param userPhone
-     * @param password
-     * @param request
-     * @param response
+     * @param userPhone "手机号"
+     * @param password  "密码"
      * @return
      */
     @PostMapping("/login")
