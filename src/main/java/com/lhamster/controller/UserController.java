@@ -1,19 +1,24 @@
 package com.lhamster.controller;
 
+import com.lhamster.domain.Audience;
 import com.lhamster.domain.BlogUser;
 import com.lhamster.domain.response.Result;
 import com.lhamster.domain.response.ResultCode;
 import com.lhamster.exception.ResultException;
 import com.lhamster.service.UserService;
+import com.lhamster.util.JwtTokenUtil;
 import com.lhamster.util.SmsUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -22,6 +27,9 @@ import java.util.HashMap;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private Audience audience;
 
     /*注入redisTemplate*/
     @Autowired
@@ -33,7 +41,7 @@ public class UserController {
      * @param "手机号"
      * @return Result
      */
-    @PostMapping("/user/{phone}")
+    @PostMapping("/check/{phone}")
     public Result messageCheck(@PathVariable("phone") String phone) {
         log.info("手机号======" + phone);
         try {
@@ -100,6 +108,42 @@ public class UserController {
             }
         } else {
             throw new ResultException(ResultCode.SMS_GET_FAILED);
+        }
+    }
+
+    /**
+     * 登录
+     *
+     * @param userPhone
+     * @param password
+     * @param request
+     * @param response
+     * @return
+     */
+    @PostMapping("/login")
+    public Result login(String userPhone, String password, HttpServletRequest request, HttpServletResponse response) {
+        String type = request.getHeader("type");
+        log.info("登录信息===手机号：" + userPhone + "\t密码：" + password + "\ttype：" + type);
+        if (!StringUtils.isEmpty(type)) {
+            try {
+                BlogUser user = userService.login(userPhone, password, type);
+                if (!StringUtils.isEmpty(user)) { // 登录成功
+                    // 生成token
+                    String token = JwtTokenUtil.createJWT(user.getUId().toString(), user.getUNickname(), "user", audience);
+                    log.info(user.toString());
+                    log.info("登陆成功===" + token);
+                    // 将token存入响应头返回给前端
+                    response.setHeader(JwtTokenUtil.AUTH_HEADER_KEY, JwtTokenUtil.TOKEN_PREFIX + token);
+                    return new Result(ResultCode.USER_LOGIN_SUCCESS);
+                } else { // 登录失败
+                    return new Result(ResultCode.USER_LOGIN_ERROR);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new ResultException(ResultCode.FAIL);
+            }
+        } else {
+            throw new ResultException(ResultCode.PERMISSION_ORIGINAL_ERROR);
         }
     }
 }

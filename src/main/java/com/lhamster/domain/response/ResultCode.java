@@ -32,7 +32,8 @@ public enum ResultCode {
     /*token权限错误：4000-4999*/
     PERMISSION_TOEKN_CREATE_FAILE(4000, "签名失败"),
     PERMISSION_TOKEN_EXPIRED(4001, "token已过期"),
-    PERMISSION_TOKEN_INVALID(4002, "无效token");
+    PERMISSION_TOKEN_INVALID(4002, "无效token"),
+    PERMISSION_ORIGINAL_ERROR(4003, "请求来源异常");
 
     //操作代码
     private Integer code;

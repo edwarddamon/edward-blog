@@ -55,4 +55,20 @@
     from blog_user
     where u_phone = #{phone}
     </select>
+    <select id="login" resultMap="BaseResultMap">
+        select u_id, u_email, u_password, u_nickname, u_headpicture, u_sex, u_phone, u_birthday,
+        u_admin
+        from blog_user
+        <where>
+            <if test="userPhone != null and userPhone != ''">
+                u_phone = #{userPhone}
+            </if>
+            <if test="password != null and password != ''">
+                and u_password = #{password}
+            </if>
+            <if test="type != 'front'">
+                and u_admin = 1
+            </if>
+        </where>
+    </select>
 </mapper>

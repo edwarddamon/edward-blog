@@ -1,6 +1,5 @@
 package com.lhamster;
 
-import com.lhamster.util.SmsUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,8 +13,7 @@ class EdwardBlogApplicationTests {
     DataSource dataSource;
 
     @Test
-    void contextLoads() throws SQLException {
-        dataSource.getConnection();
+    void contextLoads() {
     }
 
 }
