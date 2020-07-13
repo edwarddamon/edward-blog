@@ -1,5 +1,6 @@
 package com.lhamster.service.impl;
 
+import com.lhamster.domain.BlogUser;
 import com.lhamster.mapper.BlogUserMapper;
 import com.lhamster.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,5 +19,10 @@ public class UserServiceImpl implements UserService {
         } else { // 不存在
             return false;
         }
+    }
+
+    @Override
+    public void register(BlogUser blogUser) {
+        blogUserMapper.insert(blogUser);
     }
 }

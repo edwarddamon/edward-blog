@@ -14,12 +14,16 @@ public enum ResultCode {
     SMS_SEND_FAILED(1000, "短信发送失败"),
     SMS_SEND_UNKNOWERROR(1001, "短信发送失败，未知错误"),
     SMS_SEND_SUCCESS(1002, "短信发送成功"),
+    SMS_GET_FAILED(1003, "验证码读取失败"),
+    SMS_GET_PASSED(1004, "验证码已超时"),
+    SMS_GET_WRONG(1005, "验证码错误"),
 
     /*注册/用户登录：2001-2999*/
     USER_LOGIN_SUCCESS(2000, "登陆成功"),
     USER_NOT_LOGGED_IN(2001, "用户未登录，请先登录"),
     USER_LOGIN_ERROR(2002, "用户名或密码错误"),
     USER_REGISTER_EXISTED(2003, "该手机号已存在"),
+    USER_REGISTER_SUCCESS(2004, "注册成功"),
 
     /*系统错误：3000-3999*/
     SYSTEM_UNKNOWN_TOKEN(3000, "未知错误"),
