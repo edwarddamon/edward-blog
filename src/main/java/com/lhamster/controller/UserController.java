@@ -8,17 +8,22 @@ import com.lhamster.exception.ResultException;
 import com.lhamster.service.UserService;
 import com.lhamster.util.JwtTokenUtil;
 import com.lhamster.util.SmsUtils;
-import com.tencentcloudapi.nlp.v20190408.NlpClient;
+import com.lhamster.util.TencentCOSUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
-import java.util.HashMap;
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.*;
 
 @Slf4j
 @RestController
@@ -255,6 +260,50 @@ public class UserController {
             }
         } else {
             throw new ResultException(ResultCode.PERMISSION_TOKEN_INVALID);
+        }
+    }
+
+    /**
+     * 修改头像
+     *
+     * @param file
+     * @return
+     */
+    @PostMapping("/upLoadFile")
+    public Result upLoadHeadPic(@RequestParam("file") MultipartFile file, HttpSession session, HttpServletRequest request) {
+        if (file.isEmpty()) {
+            throw new ResultException(ResultCode.USER_HEADPIC_FAILED);
+        }
+        String filename = file.getOriginalFilename();
+        log.info("文件名:" + filename);
+        // uuid生成随机的文件名
+        String uuid = UUID.randomUUID().toString();
+        uuid = uuid.replaceAll("-", "");
+        // 新的文件名+文件后缀
+        filename = uuid + filename.substring(filename.lastIndexOf("."));
+        // 即将写入磁盘的地址
+        File localFile = new File(session.getServletContext().getRealPath("/") + filename);
+        // 获取用户id
+        String userId = JwtTokenUtil.getUserId(request.getHeader("lhamster_identity_info").substring(9), audience.getBase64Secret());
+        try {
+            // 将MultipartFile转为File从内存中写入磁盘
+            file.transferTo(localFile);
+            // 新头像的地址
+            String headPicUrl = TencentCOSUtil.uploadObject(localFile, "headPicture/" + filename);
+            // 查询旧头像地址
+            BlogUser blogUser = userService.queryById(Integer.parseInt(userId));
+            // 删除旧头像
+            String oldHeadPicUrl = blogUser.getUHeadpicture();
+            String oldFileName = oldHeadPicUrl.substring(oldHeadPicUrl.lastIndexOf("/") + 1);
+            if (oldFileName.length() > 6) { // 默认的图标不删除
+                TencentCOSUtil.deletefile("headPicture/" + oldFileName);
+            }
+            // 将新头像地址插入数据库
+            userService.updateHeadPic(blogUser.getUId(), headPicUrl);
+            return new Result(ResultCode.USER_HEADPIC_SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ResultException(ResultCode.USER_HEADPIC_FAILED);
         }
     }
 }

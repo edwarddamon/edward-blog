@@ -1,13 +1,17 @@
 package com.lhamster.util;
 
 /**
- * 短信常量类
+ * 腾讯云常量类
  */
 public class Constants {
     /**
      * 短信 appid
      */
     public static final String SMSAPPID = "1400396638";
+    /**
+     * 存储桶的名称
+     */
+    public static final String bucketName = "lhamster-edward-blog-1302533254";
     /**
      * 腾讯云账户密钥对: secretId
      */

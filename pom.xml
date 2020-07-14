@@ -94,6 +94,12 @@
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
         </dependency>
+        <!--腾讯云上传图片-->
+        <dependency>
+            <groupId>com.qcloud</groupId>
+            <artifactId>cos_api</artifactId>
+            <version>5.6.8</version>
+        </dependency>
     </dependencies>
 
     <build>

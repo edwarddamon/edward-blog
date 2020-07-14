@@ -61,4 +61,14 @@ public class UserServiceImpl implements UserService {
     public void setNewPwd(String phone, String password) {
         blogUserMapper.resetPwd(phone, password);
     }
+
+    @Override
+    public BlogUser queryById(int parseInt) {
+        return blogUserMapper.selectByPrimaryKey(parseInt);
+    }
+
+    @Override
+    public void updateHeadPic(Integer uId, String headPicUrl) {
+        blogUserMapper.updateHeadPic(uId, headPicUrl);
+    }
 }

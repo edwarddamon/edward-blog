@@ -16,10 +16,10 @@ public class GlobalConfig implements WebMvcConfigurer {
     /**
      * 配置jwt拦截器
      */
-    public void addInterceptors(InterceptorRegistry registry) {
+    /*public void addInterceptors(InterceptorRegistry registry) {
         // 手机验证码、注册、登录不拦截
         registry.addInterceptor(new JwtInterceptor()).addPathPatterns("/**").excludePathPatterns("/register/**", "/login");
-    }
+    }*/
 
     /**
      * 配置跨域过滤器

@@ -16,4 +16,8 @@ public interface UserService {
     void updatePwd(String newPwd, String userId);/*修改密码*/
 
     void setNewPwd(String phone, String password);/*手机短信重置密码*/
+
+    BlogUser queryById(int parseInt);/*根据id查询用户*/
+
+    void updateHeadPic(Integer uId, String headPicUrl);/*修改用户头像地址*/
 }

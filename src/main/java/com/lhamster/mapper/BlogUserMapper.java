@@ -32,4 +32,7 @@ public interface BlogUserMapper {
 
     /*根据手机查询id*/
     Integer selectKeyByPhone(String phone);
+
+    /*根据id更新用户头像*/
+    void updateHeadPic(@Param("uId") Integer uId, @Param("headPicUrl") String headPicUrl);
 }

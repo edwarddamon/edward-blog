@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+</head>
+<body>
+上传头像:
+<input type="file" id="content">
+<input type="button" id="up" value="上传">
+</body>
+<script>
+    $(function () {
+        $('#up').click(function () {
+            /*实例化一个formData对象*/
+            var formData = new FormData();
+            formData.append("file", $('#content')[0].files[0]);
+            $.ajax({
+                type: 'post',
+                url: 'upLoadFile',
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'type': 'front',
+                    'lhamster_identity_info': 'lhamster eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInVzZXJJZCI6IjMiLCJzdWIiOiIxNTI5ODY3NjIxMSIsImlzcyI6IjEiLCJpYXQiOjE1OTQ2NDY3MzEsImF1ZCI6IkRhbW9uX0Vkd2FyZCIsImV4cCI6MTU5NTI1MTUzMSwibmJmIjoxNTk0NjQ2NzMxfQ.YrcaY3dT00riUxSSTAhk1TZFF_T5wBmqlu2w_Wy7qKw'
+                },
+                /* beforeSend: function (xhr) {
+                     xhr.setRequestHeader("type:'front'");
+                     xhr.setRequestHeader("lhamster_identity_info:'lhamster eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInVzZXJJZCI6IjMiLCJzdWIiOiIxNTI5ODY3NjIxMSIsImlzcyI6IjEiLCJpYXQiOjE1OTQ2NDY3MzEsImF1ZCI6IkRhbW9uX0Vkd2FyZCIsImV4cCI6MTU5NTI1MTUzMSwibmJmIjoxNTk0NjQ2NzMxfQ.YrcaY3dT00riUxSSTAhk1TZFF_T5wBmqlu2w_Wy7qKw'");
+                 },*/
+                success: function (data) {
+                    console.log(data)
+                }
+            });
+        });
+    });
+</script>
+</html>
