@@ -27,17 +27,33 @@
       )
   </insert>
     <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogUser">
-    update blog_user
-    set u_email = #{uEmail,jdbcType=VARCHAR},
-      u_password = #{uPassword,jdbcType=VARCHAR},
-      u_nickname = #{uNickname,jdbcType=VARCHAR},
-      u_headpicture = #{uHeadpicture,jdbcType=VARCHAR},
-      u_sex = #{uSex,jdbcType=BIT},
-      u_phone = #{uPhone,jdbcType=VARCHAR},
-      u_birthday = #{uBirthday,jdbcType=TIMESTAMP},
-      u_admin = #{uAdmin,jdbcType=BIT}
-    where u_id = #{uId,jdbcType=INTEGER}
-  </update>
+        update blog_user
+        <set>
+            <if test="uEmail != null and uEmail != ''">
+                u_email = #{uEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="uNickname != null and uNickname != ''">
+                u_nickname = #{uNickname,jdbcType=VARCHAR},
+            </if>
+            <if test="uSex != null">
+                u_sex = #{uSex,jdbcType=BIT},
+            </if>
+            <if test="uBirthday != null">
+                u_birthday = #{uBirthday,jdbcType=TIMESTAMP}
+            </if>
+        </set>
+        where u_id = #{uId,jdbcType=INTEGER}
+    </update>
+    <update id="updatePwd">
+        update blog_user
+        set u_password = #{newPwd}
+        where u_id=#{parseInt}
+    </update>
+    <update id="resetPwd">
+        update blog_user
+        set u_password = #{password}
+        where u_phone=#{phone}
+    </update>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select u_id, u_email, u_password, u_nickname, u_headpicture, u_sex, u_phone, u_birthday, 
     u_admin
@@ -70,5 +86,8 @@
                 and u_admin = 1
             </if>
         </where>
+    </select>
+    <select id="selectKeyByPhone" resultType="java.lang.Integer">
+        select u_id from blog_user where u_phone=#{phone}
     </select>
 </mapper>

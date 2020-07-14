@@ -23,4 +23,13 @@ public interface BlogUserMapper {
 
     /*登录*/
     BlogUser login(@Param("userPhone") String userPhone, @Param("password") String password, @Param("type") String type);
+
+    /*修改密码*/
+    void updatePwd(@Param("parseInt") int parseInt, @Param("newPwd") String newPwd);
+
+    /*重置密码*/
+    void resetPwd(@Param("phone") String phone, @Param("password") String password);
+
+    /*根据手机查询id*/
+    Integer selectKeyByPhone(String phone);
 }

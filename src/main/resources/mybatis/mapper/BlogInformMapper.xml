@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.lhamster.mapper.BlogInformMapper" >
-  <resultMap id="BaseResultMap" type="com.lhamster.domain.BlogInform" >
-    <id column="in_id" property="inId" jdbcType="INTEGER" />
-    <result column="in_content" property="inContent" jdbcType="VARCHAR" />
-    <result column="in_informtime" property="inInformtime" jdbcType="TIMESTAMP" />
-    <result column="in_user_id" property="inUserId" jdbcType="INTEGER" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+<mapper namespace="com.lhamster.mapper.BlogInformMapper">
+    <resultMap id="BaseResultMap" type="com.lhamster.domain.BlogInform">
+        <id column="in_id" property="inId" jdbcType="INTEGER"/>
+        <result column="in_content" property="inContent" jdbcType="VARCHAR"/>
+        <result column="in_informtime" property="inInformtime" jdbcType="TIMESTAMP"/>
+        <result column="in_read" property="inRead" jdbcType="BIT"/>
+        <result column="in_user_id" property="inUserId" jdbcType="INTEGER"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from blog_inform
     where in_id = #{inId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.lhamster.domain.BlogInform" >
-    insert into blog_inform (in_id, in_content, in_informtime, 
+    <insert id="insert" parameterType="com.lhamster.domain.BlogInform">
+    insert into blog_inform (in_id, in_content, in_informtime, in_read,
       in_user_id)
-    values (#{inId,jdbcType=INTEGER}, #{inContent,jdbcType=VARCHAR}, #{inInformtime,jdbcType=TIMESTAMP}, 
+    values (#{inId,jdbcType=INTEGER}, #{inContent,jdbcType=VARCHAR}, #{inInformtime,jdbcType=TIMESTAMP}, #{inRead},
       #{inUserId,jdbcType=INTEGER})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogInform" >
+    <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogInform">
     update blog_inform
     set in_content = #{inContent,jdbcType=VARCHAR},
       in_informtime = #{inInformtime,jdbcType=TIMESTAMP},
       in_user_id = #{inUserId,jdbcType=INTEGER}
     where in_id = #{inId,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select in_id, in_content, in_informtime, in_user_id
     from blog_inform
     where in_id = #{inId,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
+    <select id="selectAll" resultMap="BaseResultMap">
     select in_id, in_content, in_informtime, in_user_id
     from blog_inform
   </select>

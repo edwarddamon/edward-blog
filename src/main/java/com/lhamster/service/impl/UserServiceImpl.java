@@ -40,4 +40,25 @@ public class UserServiceImpl implements UserService {
     public BlogUser login(String userPhone, String password, String type) {
         return blogUserMapper.login(userPhone, password, type);
     }
+
+    @Override
+    public void updateUser(BlogUser blogUser) {
+        blogUserMapper.updateByPrimaryKey(blogUser);
+    }
+
+    @Override
+    public Boolean checkOldPwd(String oldPwd, String userId) {
+        BlogUser user = blogUserMapper.selectByPrimaryKey(Integer.valueOf(userId));
+        return oldPwd.equals(user.getUPassword());
+    }
+
+    @Override
+    public void updatePwd(String newPwd, String userId) {
+        blogUserMapper.updatePwd(Integer.parseInt(userId), newPwd);
+    }
+
+    @Override
+    public void setNewPwd(String phone, String password) {
+        blogUserMapper.resetPwd(phone, password);
+    }
 }

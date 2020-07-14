@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 public class JwtInterceptor implements HandlerInterceptor {
     // 前台指定拦截的url地址
-    private List<String> urlList = new ArrayList<>(Arrays.asList("/1"));
+    private List<String> urlList = new ArrayList<>(Arrays.asList("/user"));
 
     @Autowired
     private Audience audience;

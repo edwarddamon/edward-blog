@@ -24,6 +24,12 @@ public enum ResultCode {
     USER_LOGIN_ERROR(2002, "用户名或密码错误"),
     USER_REGISTER_EXISTED(2003, "该手机号已存在"),
     USER_REGISTER_SUCCESS(2004, "注册成功"),
+    USER_UPDATE_SUCCESS(2005, "完善/修改成功"),
+    USER_UPDATE_FAILED(2006, "完善/修改失败"),
+    USER_PWD_WRONG(2007, "旧密码错误"),
+    USER_PWD_FAILED(2008, "密码修改失败"),
+    USER_PWD_SUCCESS(2009, "密码修改成功"),
+    USER_PWD_RESET_SUCCESS(2010, "密码重置成功"),
 
     /*系统错误：3000-3999*/
     SYSTEM_UNKNOWN_TOKEN(3000, "未知错误"),

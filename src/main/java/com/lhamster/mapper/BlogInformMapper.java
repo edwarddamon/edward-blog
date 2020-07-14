@@ -1,8 +1,11 @@
 package com.lhamster.mapper;
 
 import com.lhamster.domain.BlogInform;
+import org.apache.ibatis.annotations.Mapper;
+
 import java.util.List;
 
+@Mapper
 public interface BlogInformMapper {
     int deleteByPrimaryKey(Integer inId);
 

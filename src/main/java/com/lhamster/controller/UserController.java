@@ -8,14 +8,12 @@ import com.lhamster.exception.ResultException;
 import com.lhamster.service.UserService;
 import com.lhamster.util.JwtTokenUtil;
 import com.lhamster.util.SmsUtils;
+import com.tencentcloudapi.nlp.v20190408.NlpClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,37 +34,51 @@ public class UserController {
     private RedisTemplate redisTemplate;
 
     /**
+     * 发送短信
+     */
+    private Result sendMessage(String phone, Integer type) {
+        String randomCode = SmsUtils.generateRandomCode();// 六位随机数验证码
+        long currTime = new Date().getTime();// 当前时间的时间戳
+        String res = SmsUtils.sendSms(randomCode, new String[]{"86" + phone}, type);
+        if ("success".equals(res)) {// 发送成功
+            // 以手机号为key，将随机数验证码和当前时间的时间戳存入redis中
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("code", randomCode);
+            map.put("time", currTime);
+            map.put("type", type);
+            redisTemplate.opsForHash().putAll(phone, map);
+            log.info(phone + "   " + randomCode + "   " + currTime);
+            return new Result(ResultCode.SMS_SEND_SUCCESS);
+        } else {// 发送失败
+            return new Result(ResultCode.SMS_SEND_FAILED);
+        }
+    }
+
+    /**
      * 短信验证
      *
      * @param "手机号"
      * @return Result
      */
-    @PostMapping("/check/{phone}")
-    public Result messageCheck(@PathVariable("phone") String phone) {
-        log.info("手机号======" + phone);
-        try {
-            // 检查手机号是否已经存在
-            Boolean result = userService.checkPhone(phone);
-            if (result) {// 该手机号已存在
-                return new Result(ResultCode.USER_REGISTER_EXISTED);
-            } else {// 该手机号不存在,发送短信验证
-                String randomCode = SmsUtils.generateRandomCode();// 六位随机数验证码
-                long currTime = new Date().getTime();// 当前时间的时间戳
-                String res = SmsUtils.sendSms(randomCode, new String[]{"86" + phone}, 0);
-                if ("success".equals(res)) {// 发送成功
-                    // 以手机号为key，将随机数验证码和当前时间的时间戳存入redis中
-                    HashMap<String, Object> map = new HashMap<>();
-                    map.put("code", randomCode);
-                    map.put("time", currTime);
-                    redisTemplate.opsForHash().putAll(phone, map);
-                    log.info(phone + "   " + randomCode + "   " + currTime);
-                    return new Result(ResultCode.SMS_SEND_SUCCESS);
-                } else {// 发送失败
-                    return new Result(ResultCode.SMS_SEND_FAILED);
+    @PostMapping("/register/{phone}/{type}")
+    public Result messageCheck(@PathVariable("phone") String phone, @PathVariable("type") String type) {
+        log.info("手机号======" + phone + "\ttype===" + type);
+        if ("0".equals(type)) { // 注册
+            try {
+                // 检查手机号是否已经存在
+                Boolean result = userService.checkPhone(phone);
+                if (result) {// 该手机号已存在
+                    return new Result(ResultCode.USER_REGISTER_EXISTED);
+                } else {// 该手机号不存在,发送短信验证
+                    return sendMessage(phone, 0);
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new ResultException(ResultCode.SYSTEM_UNKNOWN_CHECKED);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } else if ("1".equals(type)) { // 密码重置
+            return sendMessage(phone, 1);
+        } else {
             throw new ResultException(ResultCode.SYSTEM_UNKNOWN_CHECKED);
         }
     }
@@ -112,6 +124,47 @@ public class UserController {
     }
 
     /**
+     * 通过手机验证码重新设置密码
+     *
+     * @param phone    手机号
+     * @param password 新密码
+     * @param code     手机验证码
+     * @return
+     */
+    @PutMapping("/register")
+    public Result findPwd(String phone, String password, String code) {
+        log.info(phone + "\t" + password + "\t" + code);
+        // 去redis缓存检查code是否存在，对比是否过期
+        String redisCode = (String) redisTemplate.opsForHash().get(phone, "code");
+        long redisTime = (long) redisTemplate.opsForHash().get(phone, "time");
+        if (!StringUtils.isEmpty(redisCode) && !StringUtils.isEmpty(redisTime)) { // 读取到了存入redis的该手机号的信息
+            // 判断该信息是否过期
+            long nowTime = new Date().getTime();
+            if (nowTime - redisTime < 120 * 1000) { // 没过期：对比redisCode和前端传递的code是否一致
+                if (redisCode.equals(code)) {// 一致
+                    // 将新密码存入数据库
+                    try {
+                        userService.setNewPwd(phone, password);
+                        // 删除redis中的相关信息
+                        redisTemplate.delete(phone);
+                        return new Result(ResultCode.USER_PWD_RESET_SUCCESS);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        throw new ResultException(ResultCode.FAIL);
+                    }
+                } else { // 不一致
+                    return new Result(ResultCode.SMS_GET_WRONG);
+                }
+            } else { // 过期
+                redisTemplate.delete(phone);
+                throw new ResultException(ResultCode.SMS_GET_PASSED);
+            }
+        } else {
+            throw new ResultException(ResultCode.SMS_GET_FAILED);
+        }
+    }
+
+    /**
      * 登录
      *
      * @param userPhone "手机号"
@@ -142,6 +195,66 @@ public class UserController {
             }
         } else {
             throw new ResultException(ResultCode.PERMISSION_ORIGINAL_ERROR);
+        }
+    }
+
+    /**
+     * 修改个人信息
+     *
+     * @param blogUser "昵称"、"性别"、"生日"、"邮箱"
+     * @return
+     */
+    @PutMapping("/user")
+    public Result updateUser(BlogUser blogUser, HttpServletRequest request) {
+        log.info("info===" + blogUser);
+        // 获取用户id
+        String userId = JwtTokenUtil.getUserId(request.getHeader("lhamster_identity_info").substring(9), audience.getBase64Secret());
+        if (!StringUtils.isEmpty(userId)) {
+            log.info("用户id===" + userId);
+            try {
+                // 修改用户信息
+                blogUser.setUId(Integer.valueOf(userId));
+                userService.updateUser(blogUser);
+                return new Result(ResultCode.USER_UPDATE_SUCCESS);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new ResultException(ResultCode.USER_UPDATE_FAILED);
+            }
+        } else {
+            throw new ResultException(ResultCode.PERMISSION_TOKEN_INVALID);
+        }
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param oldPwd 旧密码
+     * @param newPwd 新密码
+     * @return
+     */
+    @PatchMapping("/user")
+    public Result updatePwd(String oldPwd, String newPwd, HttpServletRequest request) {
+        log.info("旧密码===" + oldPwd + "\t新密码===" + newPwd);
+        // 获取用户id
+        String userId = JwtTokenUtil.getUserId(request.getHeader("lhamster_identity_info").substring(9), audience.getBase64Secret());
+        if (!StringUtils.isEmpty(userId)) {
+            log.info("用户id===" + userId);
+            try {
+                // 检查旧密码是否正确
+                Boolean res = userService.checkOldPwd(oldPwd, userId);
+                if (res) { // 正确
+                    // 修改密码
+                    userService.updatePwd(newPwd, userId);
+                    return new Result(ResultCode.USER_PWD_SUCCESS);
+                } else { // 错误
+                    return new Result(ResultCode.USER_PWD_WRONG);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new ResultException(ResultCode.USER_PWD_FAILED);
+            }
+        } else {
+            throw new ResultException(ResultCode.PERMISSION_TOKEN_INVALID);
         }
     }
 }
