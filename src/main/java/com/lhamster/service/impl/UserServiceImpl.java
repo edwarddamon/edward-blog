@@ -1,6 +1,11 @@
 package com.lhamster.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.lhamster.domain.BlogUser;
+import com.lhamster.domain.request.QueryVo;
+import com.lhamster.domain.response.Result;
+import com.lhamster.domain.response.ResultCode;
 import com.lhamster.mapper.BlogUserMapper;
 import com.lhamster.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -70,5 +76,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateHeadPic(Integer uId, String headPicUrl) {
         blogUserMapper.updateHeadPic(uId, headPicUrl);
+    }
+
+    @Override
+    public Result<List<BlogUser>> queryAll(QueryVo vo) {
+        Page<Object> page = PageHelper.startPage(vo.getPageNum(), vo.getPageSize());
+        List<BlogUser> blogUsers = blogUserMapper.selectAll(vo);
+        return new Result<List<BlogUser>>(ResultCode.SUCCESS, blogUsers, (int) page.getTotal());
+    }
+
+    @Override
+    public void setAdmin(Integer id, Integer decide) {
+        blogUserMapper.setAdmin(id, decide);
     }
 }

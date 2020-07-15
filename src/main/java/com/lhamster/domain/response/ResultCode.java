@@ -9,6 +9,7 @@ public enum ResultCode {
 
     /* 错误状态码 */
     FAIL(-1, "操作失败！"),
+    EMPTY(-10, "参数不能为空！"),
 
     /*短信错误：1000-1999*/
     SMS_SEND_FAILED(1000, "短信发送失败"),
@@ -35,6 +36,9 @@ public enum ResultCode {
     USER_HEADPIC_FAIL(2040, "更换头像失败"),
     USER_HEADPIC_TYPE_ERROR(2050, "上传的文件格式不符合要求"),
     USER_HEADPIC_EMPTY(2060, "头像地址不能为空"),
+    USER_ADD_EMPTY(2070, "手机号或密码不能为空"),
+    USER_DEL_FAILED(2080, "删除用户失败"),
+    USER_DEL_SUCCESS(2090, "删除用户成功"),
 
     /*系统错误：3000-3999*/
     SYSTEM_UNKNOWN_TOKEN(3000, "未知错误"),

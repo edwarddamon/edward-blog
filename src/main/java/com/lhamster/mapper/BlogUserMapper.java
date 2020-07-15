@@ -1,6 +1,7 @@
 package com.lhamster.mapper;
 
 import com.lhamster.domain.BlogUser;
+import com.lhamster.domain.request.QueryVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -14,7 +15,7 @@ public interface BlogUserMapper {
 
     BlogUser selectByPrimaryKey(Integer uId);
 
-    List<BlogUser> selectAll();
+    List<BlogUser> selectAll(QueryVo vo);
 
     int updateByPrimaryKey(BlogUser record);
 
@@ -35,4 +36,7 @@ public interface BlogUserMapper {
 
     /*根据id更新用户头像*/
     void updateHeadPic(@Param("uId") Integer uId, @Param("headPicUrl") String headPicUrl);
+
+    /*设置取消管理员*/
+    void setAdmin(@Param("id") Integer id, @Param("decide") Integer decide);
 }

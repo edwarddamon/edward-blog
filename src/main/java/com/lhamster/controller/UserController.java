@@ -2,6 +2,7 @@ package com.lhamster.controller;
 
 import com.lhamster.domain.Audience;
 import com.lhamster.domain.BlogUser;
+import com.lhamster.domain.request.QueryVo;
 import com.lhamster.domain.response.Result;
 import com.lhamster.domain.response.ResultCode;
 import com.lhamster.exception.ResultException;
@@ -16,6 +17,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.management.Query;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -339,6 +341,93 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
             throw new ResultException(ResultCode.USER_HEADPIC_FAILED);
+        }
+    }
+
+    /**
+     * 用户列表
+     *
+     * @return
+     */
+    @GetMapping("/user-back")
+    public Result<List<BlogUser>> users(QueryVo vo) {
+        return userService.queryAll(vo);
+    }
+
+    /**
+     * 添加用户
+     *
+     * @param phone
+     * @param password
+     * @return
+     */
+    @PostMapping("/user-back")
+    public Result user(String phone, String password) {
+        if (StringUtils.isEmpty(phone) || StringUtils.isEmpty(password)) {
+            throw new ResultException(ResultCode.USER_ADD_EMPTY);
+        }
+        // 检查手机号是否存在
+        Boolean result = userService.checkPhone(phone);
+        // 添加用户
+        if (result) {
+            // 存在
+            return new Result(ResultCode.USER_REGISTER_EXISTED);
+        }
+        try {
+            // 不存在
+            BlogUser blogUser = new BlogUser();
+            blogUser.setUPhone(phone);
+            blogUser.setUPassword(password);
+            userService.register(blogUser);
+            return new Result(ResultCode.SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ResultException(ResultCode.FAIL);
+        }
+    }
+
+    /**
+     * 修改用户信息
+     *
+     * @param blogUser
+     * @return
+     */
+    @PutMapping("/user-back")
+    public Result updateUserItem(BlogUser blogUser) {
+        if (StringUtils.isEmpty(blogUser.getUId())) {
+            throw new ResultException(ResultCode.EMPTY);
+        }
+        log.info(blogUser.toString());
+        try {
+            // 修改用户信息
+            userService.updateUser(blogUser);
+            return new Result(ResultCode.USER_UPDATE_SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ResultException(ResultCode.FAIL);
+        }
+    }
+
+    /**
+     * 设置/取消为管理员
+     *
+     * @param id
+     * @param decide
+     * @return
+     */
+    @PatchMapping("/user-back/{id}/{decide}")
+    public Result setAdmin(@PathVariable("id") Integer id, @PathVariable("decide") Integer decide) {
+        if (StringUtils.isEmpty(id) || StringUtils.isEmpty(decide)) {
+            throw new ResultException(ResultCode.EMPTY);
+        }
+        log.info(id + "\t" + decide);
+        try {
+            // 设置取消管理员
+            userService.setAdmin(id, decide);
+            return new Result(ResultCode.SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ResultException(ResultCode.FAIL);
         }
     }
 }
