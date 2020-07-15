@@ -31,7 +31,10 @@ public enum ResultCode {
     USER_PWD_SUCCESS(2009, "密码修改成功"),
     USER_PWD_RESET_SUCCESS(2010, "密码重置成功"),
     USER_HEADPIC_FAILED(2020, "上传头像失败"),
-    USER_HEADPIC_SUCCESS(2010, "更换头像成功"),
+    USER_HEADPIC_SUCCESS(2030, "更换头像成功"),
+    USER_HEADPIC_FAIL(2040, "更换头像失败"),
+    USER_HEADPIC_TYPE_ERROR(2050, "上传的文件格式不符合要求"),
+    USER_HEADPIC_EMPTY(2060, "头像地址不能为空"),
 
     /*系统错误：3000-3999*/
     SYSTEM_UNKNOWN_TOKEN(3000, "未知错误"),

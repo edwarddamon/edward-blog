@@ -15,19 +15,19 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.*;
 
 @Slf4j
 @RestController
 public class UserController {
+    /*图片格式*/
+    private static final List<String> suffix = new ArrayList<>(Arrays.asList(".jpg", ".jpeg", ".png", ".gif"));
+
     @Autowired
     private UserService userService;
 
@@ -264,6 +264,37 @@ public class UserController {
     }
 
     /**
+     * 更换系统默认头像
+     *
+     * @param newHeadPicUrl
+     * @return
+     */
+    @PostMapping("/user")
+    public Result updateHeadPic(String newHeadPicUrl, HttpServletRequest request) {
+        if (StringUtils.isEmpty(newHeadPicUrl)) {
+            throw new ResultException(ResultCode.USER_HEADPIC_EMPTY);
+        }
+        log.info(newHeadPicUrl);
+        // 获取用户id
+        String userId = JwtTokenUtil.getUserId(request.getHeader("lhamster_identity_info").substring(9), audience.getBase64Secret());
+        try {
+            // 查询出对应的旧头像地址
+            BlogUser blogUser = userService.queryById(Integer.parseInt(userId));
+            String oldHeadPicUrl = blogUser.getUHeadpicture();
+            String oldHeadPicName = oldHeadPicUrl.substring(oldHeadPicUrl.lastIndexOf("/"));
+            if (oldHeadPicName.length() > 6) {// 如果旧头像地址不是系统默认头像地址，删除旧头像
+                TencentCOSUtil.deletefile("headPicture/" + oldHeadPicName);
+            }
+            // 将新头像插入数据库
+            userService.updateHeadPic(Integer.parseInt(userId), newHeadPicUrl);
+            return new Result(ResultCode.USER_HEADPIC_SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ResultException(ResultCode.USER_HEADPIC_FAIL);
+        }
+    }
+
+    /**
      * 修改头像
      *
      * @param file
@@ -280,7 +311,11 @@ public class UserController {
         String uuid = UUID.randomUUID().toString();
         uuid = uuid.replaceAll("-", "");
         // 新的文件名+文件后缀
-        filename = uuid + filename.substring(filename.lastIndexOf("."));
+        String fileSuffix = filename.substring(filename.lastIndexOf("."));
+        if (!suffix.contains(fileSuffix)) { // 不是指定格式
+            throw new ResultException(ResultCode.USER_HEADPIC_TYPE_ERROR);
+        }
+        filename = uuid + fileSuffix;
         // 即将写入磁盘的地址
         File localFile = new File(session.getServletContext().getRealPath("/") + filename);
         // 获取用户id
