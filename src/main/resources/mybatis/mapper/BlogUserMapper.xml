@@ -71,7 +71,7 @@
     where u_id = #{uId,jdbcType=INTEGER}
   </select>
     <select id="selectAll" resultMap="BaseResultMap">
-        select u_id, u_email, u_password, u_nickname, u_headpicture, u_sex, u_phone, u_birthday,
+        select u_id, u_email, u_nickname, u_headpicture, u_sex, u_phone, u_birthday,
         u_admin
         from blog_user
         <where>

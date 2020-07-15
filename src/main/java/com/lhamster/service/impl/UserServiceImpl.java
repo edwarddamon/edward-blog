@@ -9,6 +9,8 @@ import com.lhamster.domain.response.ResultCode;
 import com.lhamster.mapper.BlogUserMapper;
 import com.lhamster.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -48,8 +50,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(BlogUser blogUser) {
+    public BlogUser updateUser(BlogUser blogUser) {
         blogUserMapper.updateByPrimaryKey(blogUser);
+        return blogUser;
     }
 
     @Override

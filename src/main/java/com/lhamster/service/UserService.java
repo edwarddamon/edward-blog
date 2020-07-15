@@ -13,7 +13,7 @@ public interface UserService {
 
     BlogUser login(String username, String password, String type);/*登录*/
 
-    void updateUser(BlogUser blogUser);/*完善/修改用户信息*/
+    BlogUser updateUser(BlogUser blogUser);/*完善/修改用户信息*/
 
     Boolean checkOldPwd(String oldPwd, String userId);/*检查旧密码是否正确*/
 
