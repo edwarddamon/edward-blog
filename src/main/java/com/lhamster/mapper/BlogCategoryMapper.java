@@ -1,8 +1,12 @@
 package com.lhamster.mapper;
 
 import com.lhamster.domain.BlogCategory;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
+@Mapper
 public interface BlogCategoryMapper {
     int deleteByPrimaryKey(Integer cateId);
 
@@ -13,4 +17,7 @@ public interface BlogCategoryMapper {
     List<BlogCategory> selectAll();
 
     int updateByPrimaryKey(BlogCategory record);
+
+    /*根据名称查询分类*/
+    BlogCategory selectByName(@Param("name") String name);
 }

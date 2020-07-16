@@ -48,7 +48,20 @@ public enum ResultCode {
     PERMISSION_TOEKN_CREATE_FAILE(4000, "签名失败"),
     PERMISSION_TOKEN_EXPIRED(4001, "token已过期"),
     PERMISSION_TOKEN_INVALID(4002, "无效token"),
-    PERMISSION_ORIGINAL_ERROR(4003, "请求来源异常");
+    PERMISSION_ORIGINAL_ERROR(4003, "请求来源异常"),
+
+    /*文章错误：5000-5999*/
+    ARTICLE_UPLOAD_SUCCESS(5000, "图片上传成功"),
+    ARTICLE_UPLOAD_FAILED(5010, "图片上传失败"),
+    CATEGORY_ADD_FAILED(5020, "添加分类失败"),
+    CATEGORY_ADD_SUCCESS(5030, "添加分类成功"),
+    CATEGORY_ADD_EXISTED(5040, "该分类已存在"),
+    CATEGORY_UPDATE_FAILED(5050, "修改分类失败"),
+    CATEGORY_UPDATE_SUCCESS(5060, "修改分类成功"),
+    CATEGORY_DELETE_FAILED(5070, "删除分类失败"),
+    CATEGORY_DELETE_SUCCESS(5080, "删除分类成功"),
+    ARTICLE_PUBLISH_FAILED(5090, "发布文章失败"),
+    ARTICLE_PUBLISH_SUCCESS(5100, "发布文章成功");
 
     //操作代码
     private Integer code;

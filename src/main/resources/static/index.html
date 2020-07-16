@@ -3,12 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <title>index</title>
+    <!--渲染成markdown-->
     <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <link rel="stylesheet" href="editor.md-master/css/editormd.css"/>
+    <script src="editor.md-master/editormd.min.js"></script>
+
+    <!--回显成html-->
+    <link rel="stylesheet" href="editor.md-master/css/editormd.css">
+    <link rel="stylesheet" href="editor.md-master/css/editormd.preview.css">
+
+    <script src="editor.md-master/lib/marked.min.js"></script>
+    <script src="editor.md-master/lib/prettify.min.js"></script>
+    <script src="editor.md-master/lib/raphael.min.js"></script>
+    <script src="editor.md-master/lib/underscore.min.js"></script>
+    <script src="editor.md-master/lib/sequence-diagram.min.js"></script>
+    <script src="editor.md-master/lib/flowchart.min.js"></script>
+    <script src="editor.md-master/lib/jquery.flowchart.min.js"></script>
+    <script src="editor.md-master/editormd.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
 上传头像:
 <input type="file" id="content">
 <input type="button" id="up" value="上传">
+<img src="" alt="" id="pic">
+<br>
+
+<h1>MarkDown编辑器</h1>
+<div id="test-editor">
+    <textarea style="display:none;" id="contentItem"></textarea>
+</div>
+<button id="publish">发布</button>
+
+<br>
+<!--回显markdown-->
+<div id="putIt">
+    <textarea style="display: none;" id="putItHtml"></textarea>
+</div>
 </body>
 <script>
     $(function () {
@@ -18,23 +48,60 @@
             formData.append("file", $('#content')[0].files[0]);
             $.ajax({
                 type: 'post',
-                url: 'upLoadFile',
+                /*url: 'upLoadFile',*/
+                url: 'article_pic',
                 data: formData,
                 processData: false,
                 contentType: false,
                 headers: {
-                    'type': 'front',
-                    'lhamster_identity_info': 'lhamster eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInVzZXJJZCI6IjMiLCJzdWIiOiIxNTI5ODY3NjIxMSIsImlzcyI6IjEiLCJpYXQiOjE1OTQ2NDY3MzEsImF1ZCI6IkRhbW9uX0Vkd2FyZCIsImV4cCI6MTU5NTI1MTUzMSwibmJmIjoxNTk0NjQ2NzMxfQ.YrcaY3dT00riUxSSTAhk1TZFF_T5wBmqlu2w_Wy7qKw'
+                    'type': 'back',
+                    'lhamster_identity_info': 'lhamster eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInVzZXJJZCI6IjEiLCJzdWIiOiJFZHdhcmQiLCJpc3MiOiIxIiwiaWF0IjoxNTk0Nzk3NjUxLCJhdWQiOiJEYW1vbl9FZHdhcmQiLCJleHAiOjE1OTU0MDI0NTEsIm5iZiI6MTU5NDc5NzY1MX0.LHkodgJTzARdO4e8HWTAX8w0qjXOnixNxeqPO4Mb9Lc'
                 },
-                /* beforeSend: function (xhr) {
-                     xhr.setRequestHeader("type:'front'");
-                     xhr.setRequestHeader("lhamster_identity_info:'lhamster eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInVzZXJJZCI6IjMiLCJzdWIiOiIxNTI5ODY3NjIxMSIsImlzcyI6IjEiLCJpYXQiOjE1OTQ2NDY3MzEsImF1ZCI6IkRhbW9uX0Vkd2FyZCIsImV4cCI6MTU5NTI1MTUzMSwibmJmIjoxNTk0NjQ2NzMxfQ.YrcaY3dT00riUxSSTAhk1TZFF_T5wBmqlu2w_Wy7qKw'");
-                 },*/
+                success: function (data) {
+                    console.log(data)
+                    $('#pic').attr('src', data.data);
+                }
+            });
+        });
+
+        /*渲染markdown*/
+        var editor = editormd("test-editor", {
+            width: "100%",
+            height: 600,
+            path: "editor.md-master/lib/" //依赖lib文件夹路径
+        });
+
+        /*发布*/
+        $('#publish').click(function () {
+            $.ajax({
+                type: 'post',
+                url: 'article',
+                data: {
+                    title: '我是一个title',
+                    content: $('#contentItem').val(),
+                    categoryId: 1
+                },
+                headers: {
+                    'type': 'back',
+                    'lhamster_identity_info': 'lhamster eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInVzZXJJZCI6IjEiLCJzdWIiOiJFZHdhcmQiLCJpc3MiOiIxIiwiaWF0IjoxNTk0Nzk3NjUxLCJhdWQiOiJEYW1vbl9FZHdhcmQiLCJleHAiOjE1OTU0MDI0NTEsIm5iZiI6MTU5NDc5NzY1MX0.LHkodgJTzARdO4e8HWTAX8w0qjXOnixNxeqPO4Mb9Lc'
+                },
                 success: function (data) {
                     console.log(data)
                 }
             });
+            /*回显的内容*/
+            /*回显markdown到指定的区域中*/
+            /* editormd.markdownToHTML("putIt", {
+                 htmlDecode: "style,script,iframe",
+                 emoji: true,
+                 taskList: true,
+                 tex: true, // 默认不解析
+                 flowChart: true, // 默认不解析
+                 sequenceDiagram: true, // 默认不解析
+                 codeFold: true
+             });*/
         });
+
     });
 </script>
 </html>
