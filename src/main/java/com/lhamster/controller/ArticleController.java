@@ -2,7 +2,7 @@ package com.lhamster.controller;
 
 import com.lhamster.domain.Audience;
 import com.lhamster.domain.BlogArticle;
-import com.lhamster.domain.BlogUser;
+import com.lhamster.domain.request.QueryVo;
 import com.lhamster.domain.response.Result;
 import com.lhamster.domain.response.ResultCode;
 import com.lhamster.exception.ResultException;
@@ -12,9 +12,7 @@ import com.lhamster.util.TencentCOSUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -79,13 +77,14 @@ public class ArticleController {
      * @return
      */
     @PostMapping("/article")
-    public Result article(String title, String content, Integer categoryId, HttpServletRequest request) {
-        if (StringUtils.isEmpty(title) || StringUtils.isEmpty(content) || StringUtils.isEmpty(categoryId)) {
+    public Result article(String title, String content, Integer categoryId, @RequestParam("pictures[]") String pictures, HttpServletRequest request) {
+        if (StringUtils.isEmpty(title) || StringUtils.isEmpty(content) || StringUtils.isEmpty(categoryId) || StringUtils.isEmpty(pictures)) {
             throw new ResultException(ResultCode.EMPTY);
         }
         log.info("标题===" + title);
         log.info("内容===" + content);
         log.info("分类id===" + categoryId);
+        log.info("图片地址===" + pictures);
         // 获取用户id
         String userId = JwtTokenUtil.getUserId(request.getHeader("lhamster_identity_info").substring(9), audience.getBase64Secret());
         try {
@@ -97,6 +96,7 @@ public class ArticleController {
             article.setAVisitcount(0);
             article.setAStatus(true);
             article.setACateId(categoryId);
+            article.setAPicture(pictures);
             article.setAUserId(Integer.parseInt(userId));
             // 插入到数据库
             articleService.insertArticle(article);
@@ -105,5 +105,35 @@ public class ArticleController {
             e.printStackTrace();
             throw new ResultException(ResultCode.ARTICLE_PUBLISH_FAILED);
         }
+    }
+
+    /**
+     * 根据博客文章id查询博客
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/article/{id}")
+    public Result<BlogArticle> queryArticle(@PathVariable("id") Integer id) {
+        if (StringUtils.isEmpty(id)) {
+            throw new ResultException(ResultCode.EMPTY);
+        }
+        return new Result<>(ResultCode.SUCCESS, articleService.queryArticle(id));
+    }
+
+    /**
+     * 博客列表
+     *
+     * @param vo
+     * @return
+     */
+    @GetMapping("/article")
+    public Result<List<BlogArticle>> queryMoreArticle(QueryVo vo, HttpServletRequest request) {
+        if (!StringUtils.isEmpty(vo.getJudge())) {
+            // 获取用户id
+            String userId = JwtTokenUtil.getUserId(request.getHeader("lhamster_identity_info").substring(9), audience.getBase64Secret());
+            vo.setUserId(Integer.valueOf(userId));
+        }
+        return articleService.queryMoreArticle(vo);
     }
 }

@@ -1,6 +1,7 @@
 package com.lhamster.mapper;
 
 import com.lhamster.domain.BlogArticle;
+import com.lhamster.domain.request.QueryVo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface BlogArticleMapper {
 
     BlogArticle selectByPrimaryKey(Integer aId);
 
-    List<BlogArticle> selectAll();
+    List<BlogArticle> selectAll(QueryVo vo);
 
     int updateByPrimaryKey(BlogArticle record);
 }
