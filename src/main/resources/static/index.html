@@ -39,6 +39,9 @@
 <div id="putIt">
     <textarea style="display: none;" id="putItHtml"></textarea>
 </div>
+<br>
+
+<button id="updateBlog">修改博客</button>
 </body>
 <script>
     $(function () {
@@ -102,6 +105,28 @@
                  sequenceDiagram: true, // 默认不解析
                  codeFold: true
              });*/
+        });
+
+        /*修改博客*/
+        $('#updateBlog').click(function () {
+            $.ajax({
+                type: 'put',
+                url: 'article',
+                data: {
+                    id: 3,
+                    title: '我是修改后的标题',
+                    content: $('#contentItem').val(),
+                    pictures: [0]
+                    //pictures: ['https://lhamster-edward-blog-1302533254.cos.ap-nanjing.myqcloud.com/articlePicture/1a55835eeb4e48279a827a6d699721bf.png', 'https://lhamster-edward-blog-1302533254.cos.ap-nanjing.myqcloud.com/articlePicture/f78b6d99066245e395be064d6a0604c9.jpg']
+                },
+                headers: {
+                    'type': 'back',
+                    'lhamster_identity_info': 'lhamster eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInVzZXJJZCI6IjEiLCJzdWIiOiJFZHdhcmQiLCJpc3MiOiIxIiwiaWF0IjoxNTk0Nzk3NjUxLCJhdWQiOiJEYW1vbl9FZHdhcmQiLCJleHAiOjE1OTU0MDI0NTEsIm5iZiI6MTU5NDc5NzY1MX0.LHkodgJTzARdO4e8HWTAX8w0qjXOnixNxeqPO4Mb9Lc'
+                },
+                success: function (data) {
+                    console.log(data)
+                }
+            });
         });
 
     });

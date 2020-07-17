@@ -28,18 +28,35 @@
       #{aContent,jdbcType=LONGVARCHAR})
   </insert>
     <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogArticle">
-    update blog_article
-    set a_title = #{aTitle,jdbcType=VARCHAR},
-      a_createtime = #{aCreatetime,jdbcType=TIMESTAMP},
-      a_likecount = #{aLikecount,jdbcType=INTEGER},
-      a_visitcount = #{aVisitcount,jdbcType=INTEGER},
-      a_status = #{aStatus,jdbcType=BIT},
-      a_picture = #{aPicture,jdbcType=VARCHAR},
-      a_cate_id = #{aCateId,jdbcType=INTEGER},
-      a_user_id = #{aUserId,jdbcType=INTEGER},
-      a_content = #{aContent,jdbcType=LONGVARCHAR}
-    where a_id = #{aId,jdbcType=INTEGER}
-  </update>
+        update blog_article
+        <set>
+            <if test="aTitle != null and aTitle != ''">
+                a_title = #{aTitle},
+            </if>
+            <if test="aContent != null and aContent != ''">
+                a_content = #{aContent},
+            </if>
+            <if test="aPicture != null and aPicture != ''">
+                a_picture = #{aPicture}
+            </if>
+        </set>
+        where a_id = #{aId}
+    </update>
+    <update id="setArticleStatus">
+        update blog_article
+        set a_status = #{status}
+        where a_id = #{id}
+    </update>
+    <update id="setLikeCount">
+        update blog_article
+        set a_likecount = #{aLikecount}
+        where a_id = #{id}
+    </update>
+    <update id="setVisitCount">
+        update blog_article
+        set a_visitcount = #{aVisitcount}
+        where a_id = #{id}
+    </update>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select a_id, a_title, a_createtime, a_likecount, a_visitcount, a_status, a_picture, 
     a_cate_id, a_user_id, a_content

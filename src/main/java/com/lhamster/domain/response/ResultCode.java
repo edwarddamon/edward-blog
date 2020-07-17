@@ -10,6 +10,7 @@ public enum ResultCode {
     /* 错误状态码 */
     FAIL(-1, "操作失败！"),
     EMPTY(-10, "参数不能为空！"),
+    VISIT_COUNT_FAILED(-20, "博客访问次数统计失败！"),
 
     /*短信错误：1000-1999*/
     SMS_SEND_FAILED(1000, "短信发送失败"),
@@ -53,6 +54,8 @@ public enum ResultCode {
     /*文章错误：5000-5999*/
     ARTICLE_UPLOAD_SUCCESS(5000, "图片上传成功"),
     ARTICLE_UPLOAD_FAILED(5010, "图片上传失败"),
+    ARTICLE_DELETE_FAILED(5012, "图片删除失败"),
+    ARTICLE_DELETE_SUCCESS(5014, "图片删除成功"),
     CATEGORY_ADD_FAILED(5020, "添加分类失败"),
     CATEGORY_ADD_SUCCESS(5030, "添加分类成功"),
     CATEGORY_ADD_EXISTED(5040, "该分类已存在"),
@@ -60,6 +63,12 @@ public enum ResultCode {
     CATEGORY_UPDATE_SUCCESS(5060, "修改分类成功"),
     CATEGORY_DELETE_FAILED(5070, "删除分类失败"),
     CATEGORY_DELETE_SUCCESS(5080, "删除分类成功"),
+    ARTICLE_UPDATE_FAILED(5082, "文章修改失败"),
+    ARTICLE_UPDATE_SUCCESS(5084, "文章修改成功"),
+    BLOGARTICLE_DELETE_FAILED(5086, "文章删除失败"),
+    BLOGARTICLE_DELETE_SUCCESS(5088, "文章删除成功"),
+    ARTICLE_RECOVER_FAILED(5089, "文章恢复失败"),
+    ARTICLE_RECOVER_SUCCESS(5189, "文章恢复成功"),
     ARTICLE_PUBLISH_FAILED(5090, "发布文章失败"),
     ARTICLE_PUBLISH_SUCCESS(5100, "发布文章成功");
 
