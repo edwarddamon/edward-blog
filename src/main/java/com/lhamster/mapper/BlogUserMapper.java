@@ -15,6 +15,8 @@ public interface BlogUserMapper {
 
     BlogUser selectByPrimaryKey(Integer uId);
 
+    BlogUser selectById(Integer uId);
+
     List<BlogUser> selectAll(QueryVo vo);
 
     int updateByPrimaryKey(BlogUser record);

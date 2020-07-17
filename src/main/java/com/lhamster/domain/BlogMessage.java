@@ -16,4 +16,6 @@ public class BlogMessage {
     private Date mesMestime;
     private Boolean mesTop;
     private Integer mesUserId;
+    private Integer mesTargetId;
+    private Integer mesParentId;
 }

@@ -1,48 +1,109 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.lhamster.mapper.BlogCommentMapper" >
-  <resultMap id="BaseResultMap" type="com.lhamster.domain.BlogComment" >
-    <id column="com_id" property="comId" jdbcType="INTEGER" />
-    <result column="com_content" property="comContent" jdbcType="VARCHAR" />
-    <result column="com_comtime" property="comComtime" jdbcType="TIMESTAMP" />
-    <result column="com_likecount" property="comLikecount" jdbcType="INTEGER" />
-    <result column="com_com_id" property="comComId" jdbcType="INTEGER" />
-    <result column="com_article_id" property="comArticleId" jdbcType="INTEGER" />
-    <result column="com_message_id" property="comMessageId" jdbcType="INTEGER" />
-    <result column="com_user_id" property="comUserId" jdbcType="INTEGER" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+<mapper namespace="com.lhamster.mapper.BlogCommentMapper">
+    <resultMap id="BaseResultMap" type="com.lhamster.domain.BlogComment">
+        <id column="com_id" property="comId" jdbcType="INTEGER"/>
+        <result column="com_content" property="comContent" jdbcType="VARCHAR"/>
+        <result column="com_comtime" property="comComtime" jdbcType="TIMESTAMP"/>
+        <result column="com_likecount" property="comLikecount" jdbcType="INTEGER"/>
+        <result column="com_com_id" property="comComId" jdbcType="INTEGER"/>
+        <result column="com_article_id" property="comArticleId" jdbcType="INTEGER"/>
+        <!--级联目标用户-->
+        <association property="targetUser" column="com_target_id" javaType="com.lhamster.domain.BlogUser"
+                     select="com.lhamster.mapper.BlogUserMapper.selectById"/>
+        <!--级联用户-->
+        <association property="blogUser" column="com_user_id" javaType="com.lhamster.domain.BlogUser"
+                     select="com.lhamster.mapper.BlogUserMapper.selectById"/>
+        <!--级联子评论-->
+        <collection property="blogComments" column="com_id" ofType="com.lhamster.domain.BlogComment"
+                    select="com.lhamster.mapper.BlogCommentMapper.selectByParentId"/>
+    </resultMap>
+    <!--后台评论列表resultMap-->
+    <resultMap id="BackResultMap" type="com.lhamster.domain.BlogComment">
+        <id column="com_id" property="comId" jdbcType="INTEGER"/>
+        <result column="com_content" property="comContent" jdbcType="VARCHAR"/>
+        <result column="com_comtime" property="comComtime" jdbcType="TIMESTAMP"/>
+        <result column="com_likecount" property="comLikecount" jdbcType="INTEGER"/>
+        <result column="com_com_id" property="comComId" jdbcType="INTEGER"/>
+        <result column="com_article_id" property="comArticleId" jdbcType="INTEGER"/>
+        <!--级联目标用户-->
+        <association property="targetUser" column="com_target_id" javaType="com.lhamster.domain.BlogUser"
+                     select="com.lhamster.mapper.BlogUserMapper.selectById"/>
+        <!--级联用户-->
+        <association property="blogUser" javaType="com.lhamster.domain.BlogUser">
+            <id column="com_user_id" property="uId" jdbcType="INTEGER"/>
+            <result column="u_nickname" property="uNickname" jdbcType="VARCHAR"/>
+            <result column="u_headpicture" property="uHeadpicture" jdbcType="VARCHAR"/>
+            <result column="u_sex" property="uSex" jdbcType="BIT"/>
+            <result column="u_birthday" property="uBirthday" jdbcType="TIMESTAMP"/>
+        </association>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from blog_comment
     where com_id = #{comId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.lhamster.domain.BlogComment" >
+    <insert id="insert" parameterType="com.lhamster.domain.BlogComment">
     insert into blog_comment (com_id, com_content, com_comtime, 
-      com_likecount, com_com_id, com_article_id, 
-      com_message_id, com_user_id)
+      com_likecount, com_com_id, com_article_id, com_user_id)
     values (#{comId,jdbcType=INTEGER}, #{comContent,jdbcType=VARCHAR}, #{comComtime,jdbcType=TIMESTAMP}, 
-      #{comLikecount,jdbcType=INTEGER}, #{comComId,jdbcType=INTEGER}, #{comArticleId,jdbcType=INTEGER}, 
-      #{comMessageId,jdbcType=INTEGER}, #{comUserId,jdbcType=INTEGER})
+      #{comLikecount,jdbcType=INTEGER}, #{comComId,jdbcType=INTEGER}, #{comArticleId,jdbcType=INTEGER}, #{comUserId,jdbcType=INTEGER})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogComment" >
+    <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogComment">
     update blog_comment
     set com_content = #{comContent,jdbcType=VARCHAR},
       com_comtime = #{comComtime,jdbcType=TIMESTAMP},
       com_likecount = #{comLikecount,jdbcType=INTEGER},
       com_com_id = #{comComId,jdbcType=INTEGER},
       com_article_id = #{comArticleId,jdbcType=INTEGER},
-      com_message_id = #{comMessageId,jdbcType=INTEGER},
       com_user_id = #{comUserId,jdbcType=INTEGER}
     where com_id = #{comId,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select com_id, com_content, com_comtime, com_likecount, com_com_id, com_article_id, 
-    com_message_id, com_user_id
-    from blog_comment
-    where com_id = #{comId,jdbcType=INTEGER}
+    <update id="setLikeCount">
+        update blog_comment
+        set com_likecount = #{likecount}
+        where com_id = #{comId}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="BackResultMap" parameterType="java.lang.Integer">
+    select com_id, com_content, com_comtime, com_likecount, com_com_id, com_article_id,com_target_id,
+        com_user_id,u_nickname,
+        u_headpicture,u_sex,u_birthday
+    from blog_comment LEFT JOIN blog_user ON com_user_id = blog_user.u_id
+    where com_user_id = #{userId}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
-    select com_id, com_content, com_comtime, com_likecount, com_com_id, com_article_id, 
-    com_message_id, com_user_id
-    from blog_comment
-  </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select com_id, com_content, com_comtime, com_likecount, com_com_id, com_article_id,com_target_id, com_user_id
+        from blog_comment
+        <where>
+            <if test="articleId != null and articleId != ''">
+                com_article_id = #{articleId}
+            </if>
+        </where>
+        order by com_comtime desc
+    </select>
+    <select id="selectByParentId" resultMap="BaseResultMap">
+        select com_id, com_content, com_comtime, com_likecount, com_com_id, com_article_id, com_target_id, com_user_id
+        from blog_comment
+        where com_com_id = #{parentId}
+        order by `com_comtime`
+    </select>
+    <select id="queryBack" resultMap="BackResultMap">
+        select com_id, com_content, com_comtime, com_likecount, com_com_id, com_article_id,com_target_id,
+        com_user_id,u_nickname,
+        u_headpicture,u_sex,u_birthday
+        from blog_comment LEFT JOIN blog_user ON com_user_id = blog_user.u_id
+        <where>
+            <if test="comContent != null and comContent != ''">
+                com_content like concat('%',#{comContent},'%')
+            </if>
+            <if test="nickName != null and nickName != ''">
+                and u_nickname like concat('%',#{nickName},'%')
+            </if>
+        </where>
+        order by com_comtime desc
+    </select>
+    <select id="selectSingle" resultMap="BackResultMap">
+        select com_id, com_content, com_comtime, com_likecount, com_com_id, com_article_id, com_target_id, com_user_id
+        from blog_comment
+        where com_id = #{comId}
+    </select>
 </mapper>
