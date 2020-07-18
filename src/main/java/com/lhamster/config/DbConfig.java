@@ -28,8 +28,8 @@ public class DbConfig {
     public ServletRegistrationBean statViewServlet() {
         ServletRegistrationBean<StatViewServlet> bean = new ServletRegistrationBean<>(new StatViewServlet(), "/druid/*");
         Map<String, String> initParams = new HashMap<>();
-        initParams.put("loginUsername", "admin");//设置登录监控的用户名
-        initParams.put("loginPassword", "123456");//设置登录监控的密码
+        initParams.put("loginUsername", "edward");//设置登录监控的用户名
+        initParams.put("loginPassword", "131420");//设置登录监控的密码
         initParams.put("allow", "");//默认就是允许所有访问
         bean.setInitParameters(initParams);
         return bean;

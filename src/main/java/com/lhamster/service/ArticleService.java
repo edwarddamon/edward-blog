@@ -20,4 +20,6 @@ public interface ArticleService {
     BlogArticle setLike(Integer id, Boolean like);/*点赞*/
 
     BlogArticle addBlogVistCount(Integer id);/*统计博客访问次数*/
+
+    void delete(Integer articleId);/*删除博客文章*/
 }

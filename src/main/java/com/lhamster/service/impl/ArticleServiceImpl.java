@@ -3,14 +3,17 @@ package com.lhamster.service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.lhamster.domain.BlogArticle;
+import com.lhamster.domain.BlogComment;
 import com.lhamster.domain.request.QueryVo;
 import com.lhamster.domain.response.Result;
 import com.lhamster.domain.response.ResultCode;
 import com.lhamster.mapper.BlogArticleMapper;
 import com.lhamster.service.ArticleService;
+import com.lhamster.service.CommentService;
 import com.lhamster.util.TencentCOSUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -26,6 +29,9 @@ import java.util.List;
 public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private BlogArticleMapper blogArticleMapper;
+
+    @Autowired
+    private CommentService commentService;
 
     @Override
     public void insertArticle(BlogArticle article) {
@@ -117,5 +123,33 @@ public class ArticleServiceImpl implements ArticleService {
         // 插入数据库
         blogArticleMapper.setVisitCount(id, blogArticle.getAVisitcount());
         return blogArticle;
+    }
+
+    @Override
+    @CacheEvict(cacheNames = "article")
+    public void delete(Integer articleId) {
+        // 删除腾讯云该文章的图片
+        List<String> newPic = new ArrayList<>();
+        BlogArticle blogArticle = blogArticleMapper.selectByPrimaryKey(articleId);
+        String pictures = blogArticle.getAPicture();
+        while (!StringUtils.isEmpty(pictures)) {
+            if (!pictures.contains(",")) {
+                newPic.add(pictures);
+                break;
+            }
+            newPic.add(pictures.substring(0, pictures.indexOf(",")));
+            pictures = pictures.substring(pictures.indexOf(",") + 1);
+        }
+        log.info(newPic.toString());
+        for (String s : newPic) {
+            TencentCOSUtil.deletefile("articlePicture" + s.substring(s.lastIndexOf("/")));
+        }
+        // 删除博客的评论
+        List<BlogComment> blogComments = commentService.selectAll(articleId);
+        for (BlogComment blogComment : blogComments) {
+            commentService.deleteComment(blogComment.getComId());
+        }
+        // 删除博客文章
+        blogArticleMapper.deleteByPrimaryKey(articleId);
     }
 }

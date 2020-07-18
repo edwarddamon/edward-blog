@@ -15,4 +15,8 @@ public interface CommentService {
     List<BlogComment> selectById(Integer userId);/*根据用户id查询评论*/
 
     void setLike(Integer comId, Boolean status);/*点赞*/
+
+    void publishComment(String comContent, Integer articleId, Integer parentId, Integer targetId, Integer userId);/*发布评论*/
+
+    void deleteComment(Integer id);/*删除评论*/
 }

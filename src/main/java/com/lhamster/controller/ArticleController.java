@@ -11,6 +11,7 @@ import com.lhamster.util.JwtTokenUtil;
 import com.lhamster.util.TencentCOSUtil;
 import com.sun.org.apache.regexp.internal.RE;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -228,6 +229,27 @@ public class ArticleController {
                 // 删除
                 return new Result(ResultCode.BLOGARTICLE_DELETE_FAILED);
             }
+        }
+    }
+
+    /**
+     * 删除博客文章
+     *
+     * @param articleId
+     * @return
+     */
+    @DeleteMapping("/article")
+    public Result deleteArticle(Integer articleId) {
+        if (StringUtils.isEmpty(articleId)) {
+            throw new ResultException(ResultCode.EMPTY);
+        }
+        try {
+            // 彻底删除博客
+            articleService.delete(articleId);
+            return new Result(ResultCode.BLOGARTICLE_DELETE_SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ResultException(ResultCode.BLOGARTICLE_DELETE_FAILED);
         }
     }
 

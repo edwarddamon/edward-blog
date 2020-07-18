@@ -47,7 +47,7 @@ public enum ResultCode {
 
     /*token权限错误：4000-4999*/
     PERMISSION_TOEKN_CREATE_FAILE(4000, "签名失败"),
-    PERMISSION_TOKEN_EXPIRED(4001, "token已过期"),
+    PERMISSION_TOKEN_EXPIRED(4001, "登录失效,请重新登录"),
     PERMISSION_TOKEN_INVALID(4002, "无效token"),
     PERMISSION_ORIGINAL_ERROR(4003, "请求来源异常"),
 
@@ -70,7 +70,12 @@ public enum ResultCode {
     ARTICLE_RECOVER_FAILED(5089, "文章恢复失败"),
     ARTICLE_RECOVER_SUCCESS(5189, "文章恢复成功"),
     ARTICLE_PUBLISH_FAILED(5090, "发布文章失败"),
-    ARTICLE_PUBLISH_SUCCESS(5100, "发布文章成功");
+    ARTICLE_PUBLISH_SUCCESS(5100, "发布文章成功"),
+    COMMENT_PUBLISH_FAILED(5105, "评论发布失败"),
+    COMMENT_PUBLISH_EMPTY(5106, "评论内容不能为空"),
+    COMMENT_PUBLISH_SUCCESS(5110, "评论发布成功"),
+    COMMENT_DELETE_FAILED(5115, "评论删除失败"),
+    COMMENT_DELETE_SUCCESS(5120, "评论删除成功");
 
     //操作代码
     private Integer code;

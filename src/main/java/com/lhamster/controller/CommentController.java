@@ -11,9 +11,7 @@ import com.lhamster.util.JwtTokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -87,5 +85,53 @@ public class CommentController {
         // 获取用户id
         String userId = JwtTokenUtil.getUserId(request.getHeader("lhamster_identity_info").substring(9), audience.getBase64Secret());
         return new Result<>(ResultCode.SUCCESS, commentService.selectById(Integer.valueOf(userId)));
+    }
+
+    /**
+     * 发表评论
+     *
+     * @param comContent 评论内容
+     * @param articleId  文章id（1）
+     * @param parentId   父评论id（2）
+     * @param targetId   目标用户id（2）
+     * @return
+     */
+    @PostMapping("/comment")
+    public Result insertComment(String comContent, Integer articleId, Integer parentId, Integer targetId, HttpServletRequest request) {
+        if (StringUtils.isEmpty(comContent)) {
+            throw new ResultException(ResultCode.COMMENT_PUBLISH_EMPTY);
+        }
+        // 获取用户id
+        String userId = JwtTokenUtil.getUserId(request.getHeader("lhamster_identity_info").substring(9), audience.getBase64Secret());
+        try {
+            // 发布评论
+            commentService.publishComment(comContent, articleId, parentId, targetId, Integer.parseInt(userId));
+            return new Result(ResultCode.COMMENT_PUBLISH_SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ResultException(ResultCode.COMMENT_PUBLISH_FAILED);
+        }
+    }
+
+    /**
+     * 删除评论
+     * 说明：该评论及其子评论都删除了
+     *
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/comment")
+    public Result deleteCom(Integer id) {
+        if (StringUtils.isEmpty(id)) {
+            throw new ResultException(ResultCode.EMPTY);
+        }
+        try {
+            // 删除评论
+            commentService.deleteComment(id);
+            return new Result(ResultCode.COMMENT_DELETE_SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new ResultException(ResultCode.COMMENT_DELETE_FAILED);
+        }
     }
 }

@@ -44,9 +44,9 @@
   </delete>
     <insert id="insert" parameterType="com.lhamster.domain.BlogComment">
     insert into blog_comment (com_id, com_content, com_comtime, 
-      com_likecount, com_com_id, com_article_id, com_user_id)
+      com_likecount, com_com_id, com_article_id, com_target_id, com_user_id)
     values (#{comId,jdbcType=INTEGER}, #{comContent,jdbcType=VARCHAR}, #{comComtime,jdbcType=TIMESTAMP}, 
-      #{comLikecount,jdbcType=INTEGER}, #{comComId,jdbcType=INTEGER}, #{comArticleId,jdbcType=INTEGER}, #{comUserId,jdbcType=INTEGER})
+      #{comLikecount,jdbcType=INTEGER}, #{comComId,jdbcType=INTEGER}, #{comArticleId,jdbcType=INTEGER}, #{targetUser.uId,jdbcType=INTEGER},#{blogUser.uId,jdbcType=INTEGER})
   </insert>
     <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogComment">
     update blog_comment
