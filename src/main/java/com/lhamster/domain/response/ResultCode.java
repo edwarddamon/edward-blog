@@ -75,7 +75,13 @@ public enum ResultCode {
     COMMENT_PUBLISH_EMPTY(5106, "评论内容不能为空"),
     COMMENT_PUBLISH_SUCCESS(5110, "评论发布成功"),
     COMMENT_DELETE_FAILED(5115, "评论删除失败"),
-    COMMENT_DELETE_SUCCESS(5120, "评论删除成功");
+    COMMENT_DELETE_SUCCESS(5120, "评论删除成功"),
+
+    /*消息：6000-6100*/
+    INFORM_READ_SUCCESS(6000, "消息已读设置成功"),
+    INFORM_READ_FAILED(6001, "消息已读设置失败"),
+    INFORM_DELETE_SUCCESS(6005, "消息删除成功"),
+    INFORM_DELETE_FAILED(6008, "消息删除失败");
 
     //操作代码
     private Integer code;

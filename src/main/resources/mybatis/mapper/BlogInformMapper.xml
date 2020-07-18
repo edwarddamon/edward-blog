@@ -20,9 +20,7 @@
   </insert>
     <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogInform">
     update blog_inform
-    set in_content = #{inContent,jdbcType=VARCHAR},
-      in_informtime = #{inInformtime,jdbcType=TIMESTAMP},
-      in_user_id = #{inUserId,jdbcType=INTEGER}
+    set in_read = true
     where in_id = #{inId,jdbcType=INTEGER}
   </update>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
@@ -31,7 +29,21 @@
     where in_id = #{inId,jdbcType=INTEGER}
   </select>
     <select id="selectAll" resultMap="BaseResultMap">
-    select in_id, in_content, in_informtime, in_user_id
-    from blog_inform
-  </select>
+        select in_id, in_content, in_informtime, in_read, in_user_id
+        from blog_inform
+        <where>
+            <if test="read != null">
+                in_read = #{read}
+            </if>
+            <if test="userId != null">
+                and in_user_id = #{userId}
+            </if>
+        </where>
+        order by in_informtime desc
+    </select>
+    <select id="selectByUserId" resultMap="BaseResultMap">
+        select in_id, in_content, in_informtime, in_read, in_user_id
+        from blog_inform
+        where in_user_id = #{userId}
+    </select>
 </mapper>
