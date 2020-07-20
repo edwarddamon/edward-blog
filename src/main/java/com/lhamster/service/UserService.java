@@ -28,4 +28,6 @@ public interface UserService {
     Result<List<BlogUser>> queryAll(QueryVo vo);/*查询所有*/
 
     void setAdmin(Integer id, Integer decide);/*设置取消管理员*/
+
+    BlogUser loginThird(String identityId, String nickName, String headPicUrl, String sex);/*三方登录*/
 }

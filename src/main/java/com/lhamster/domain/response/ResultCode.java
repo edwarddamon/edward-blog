@@ -40,6 +40,7 @@ public enum ResultCode {
     USER_ADD_EMPTY(2070, "手机号或密码不能为空"),
     USER_DEL_FAILED(2080, "删除用户失败"),
     USER_DEL_SUCCESS(2090, "删除用户成功"),
+    USER_LOGIN_FAILED(2100, "登录失败"),
 
     /*系统错误：3000-3999*/
     SYSTEM_UNKNOWN_TOKEN(3000, "未知错误"),

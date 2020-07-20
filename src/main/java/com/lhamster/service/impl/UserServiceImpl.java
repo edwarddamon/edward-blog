@@ -8,9 +8,8 @@ import com.lhamster.domain.response.Result;
 import com.lhamster.domain.response.ResultCode;
 import com.lhamster.mapper.BlogUserMapper;
 import com.lhamster.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -18,6 +17,7 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 import java.util.Random;
 
+@Slf4j
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
@@ -91,5 +91,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public void setAdmin(Integer id, Integer decide) {
         blogUserMapper.setAdmin(id, decide);
+    }
+
+    @Override
+    public BlogUser loginThird(String identityId, String nickName, String headPicUrl, String sex) {
+        BlogUser blogUser = blogUserMapper.selectByIdentify(identityId);
+        if (!StringUtils.isEmpty(blogUser)) {
+            return blogUser;
+        }
+        blogUser = new BlogUser();
+        blogUser.setUNickname(nickName);
+        blogUser.setUPassword(identityId);
+        blogUser.setUHeadpicture(headPicUrl);
+        blogUser.setUSex("男".equals(sex));
+        blogUser.setUAdmin(false);
+        // 插入数据库
+        blogUserMapper.insert(blogUser);
+        log.info(blogUser.toString());
+        return blogUser;
     }
 }

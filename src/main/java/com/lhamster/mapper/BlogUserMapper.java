@@ -41,4 +41,7 @@ public interface BlogUserMapper {
 
     /*设置取消管理员*/
     void setAdmin(@Param("id") Integer id, @Param("decide") Integer decide);
+
+    /*根据identity获取用户*/
+    BlogUser selectByIdentify(String identityId);
 }

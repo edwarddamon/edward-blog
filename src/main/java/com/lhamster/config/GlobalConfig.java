@@ -17,8 +17,8 @@ public class GlobalConfig implements WebMvcConfigurer {
      * 配置jwt拦截器
      */
     public void addInterceptors(InterceptorRegistry registry) {
-        // 手机验证码、注册、登录不拦截
-        registry.addInterceptor(new JwtInterceptor()).addPathPatterns("/**").excludePathPatterns("/register/**", "/login", "/index.html",
+        //手机验证码、注册、登录不拦截
+        registry.addInterceptor(new JwtInterceptor()).addPathPatterns("/**").excludePathPatterns("/register/**", "/login", "/index.html", "/login-third",
                 "/**/*.css", "/**/*.js", "/**/*.png", "/**/*.gif", "/**/*.jpeg", "/**/*.jpg", "/**/*.svg", "/**/*.woff", "/**/*.woff2", "/**/*.ttf");
     }
 
