@@ -41,6 +41,7 @@ public enum ResultCode {
     USER_DEL_FAILED(2080, "删除用户失败"),
     USER_DEL_SUCCESS(2090, "删除用户成功"),
     USER_LOGIN_FAILED(2100, "登录失败"),
+    USER_ACCESS_QQ_FAILED(2200, "获取QQ用户信息失败"),
 
     /*系统错误：3000-3999*/
     SYSTEM_UNKNOWN_TOKEN(3000, "未知错误"),

@@ -205,41 +205,6 @@ public class UserController {
     }
 
     /**
-     * 三方登录
-     *
-     * @param nickName
-     * @param headPicUrl
-     * @param sex
-     * @param identityId
-     * @param response
-     * @return
-     */
-    @PostMapping("/login-third")
-    public Result loginThird(String nickName, String headPicUrl, String sex, String identityId, HttpServletResponse response) {
-        if (StringUtils.isEmpty(nickName) || StringUtils.isEmpty(headPicUrl) || StringUtils.isEmpty(sex) || StringUtils.isEmpty(identityId)) {
-            throw new ResultException(ResultCode.EMPTY);
-        }
-        log.info(nickName);
-        log.info(headPicUrl);
-        log.info(sex);
-        log.info(identityId);
-        try {
-            // 三方登录
-            BlogUser user = userService.loginThird(identityId, nickName, headPicUrl, sex);
-            // 生成token
-            String token = JwtTokenUtil.createJWT(user.getUId().toString(), user.getUNickname(), "user", audience);
-            log.info(user.toString());
-            log.info("登陆成功===" + token);
-            // 将token存入响应头返回给前端
-            response.setHeader(JwtTokenUtil.AUTH_HEADER_KEY, JwtTokenUtil.TOKEN_PREFIX + token);
-            return new Result(ResultCode.USER_LOGIN_SUCCESS);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ResultException(ResultCode.USER_LOGIN_FAILED);
-        }
-    }
-
-    /**
      * 修改个人信息
      *
      * @param blogUser "昵称"、"性别"、"生日"、"邮箱"

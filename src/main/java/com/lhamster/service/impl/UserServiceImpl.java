@@ -6,6 +6,7 @@ import com.lhamster.domain.BlogUser;
 import com.lhamster.domain.request.QueryVo;
 import com.lhamster.domain.response.Result;
 import com.lhamster.domain.response.ResultCode;
+import com.lhamster.exception.ResultException;
 import com.lhamster.mapper.BlogUserMapper;
 import com.lhamster.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -95,6 +96,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public BlogUser loginThird(String identityId, String nickName, String headPicUrl, String sex) {
+        if (StringUtils.isEmpty(identityId) || StringUtils.isEmpty(nickName) || StringUtils.isEmpty(headPicUrl) || StringUtils.isEmpty(sex)) {
+            throw new ResultException(ResultCode.USER_LOGIN_FAILED);
+        }
         BlogUser blogUser = blogUserMapper.selectByIdentify(identityId);
         if (!StringUtils.isEmpty(blogUser)) {
             return blogUser;
