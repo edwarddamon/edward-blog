@@ -83,7 +83,15 @@ public enum ResultCode {
     INFORM_READ_SUCCESS(6000, "消息已读设置成功"),
     INFORM_READ_FAILED(6001, "消息已读设置失败"),
     INFORM_DELETE_SUCCESS(6005, "消息删除成功"),
-    INFORM_DELETE_FAILED(6008, "消息删除失败");
+    INFORM_DELETE_FAILED(6008, "消息删除失败"),
+
+    /*留言：6101-6200*/
+    MESSAGE_PUBLISH_SUCCESS(6101, "留言发布成功"),
+    MESSAGE_PUBLISH_FAILED(6105, "留言发布失败"),
+    MESSAGE_TOP_SUCCESS(6110, "留言置顶成功"),
+    MESSAGE_TOP_FAILED(6112, "留言置顶失败"),
+    MESSAGE_DELETE_SUCCESS(6115, "留言删除成功"),
+    MESSAGE_DELETE_FAILED(6116, "留言删除失败");
 
     //操作代码
     private Integer code;

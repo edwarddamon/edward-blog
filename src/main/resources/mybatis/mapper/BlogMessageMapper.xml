@@ -7,9 +7,30 @@
         <result column="mes_likecount" property="mesLikecount" jdbcType="INTEGER"/>
         <result column="mes_mestime" property="mesMestime" jdbcType="TIMESTAMP"/>
         <result column="mes_top" property="mesTop" jdbcType="BIT"/>
-        <result column="mes_user_id" property="mesUserId" jdbcType="INTEGER"/>
-        <result column="mes_target_id" property="mesTargetId" jdbcType="INTEGER"/>
         <result column="mes_parent_id" property="mesParentId" jdbcType="INTEGER"/>
+        <!--目标用户-->
+        <association property="targetUser" column="mes_target_id" javaType="com.lhamster.domain.BlogUser"
+                     select="com.lhamster.mapper.BlogUserMapper.selectByPrimaryKey"/>
+        <!--当前用户-->
+        <association property="currUser" column="mes_user_id" javaType="com.lhamster.domain.BlogUser"
+                     select="com.lhamster.mapper.BlogUserMapper.selectByPrimaryKey"/>
+        <!--子留言-->
+        <collection property="blogMessageList" column="mes_id" ofType="com.lhamster.domain.BlogMessage"
+                    select="com.lhamster.mapper.BlogMessageMapper.selectByParentId"/>
+    </resultMap>
+    <resultMap id="SingleResultMap" type="com.lhamster.domain.BlogMessage">
+        <id column="mes_id" property="mesId" jdbcType="INTEGER"/>
+        <result column="mes_content" property="mesContent" jdbcType="VARCHAR"/>
+        <result column="mes_likecount" property="mesLikecount" jdbcType="INTEGER"/>
+        <result column="mes_mestime" property="mesMestime" jdbcType="TIMESTAMP"/>
+        <result column="mes_top" property="mesTop" jdbcType="BIT"/>
+        <result column="mes_parent_id" property="mesParentId" jdbcType="INTEGER"/>
+        <!--目标用户-->
+        <association property="targetUser" column="mes_target_id" javaType="com.lhamster.domain.BlogUser"
+                     select="com.lhamster.mapper.BlogUserMapper.selectByPrimaryKey"/>
+        <!--当前用户-->
+        <association property="currUser" column="mes_user_id" javaType="com.lhamster.domain.BlogUser"
+                     select="com.lhamster.mapper.BlogUserMapper.selectByPrimaryKey"/>
     </resultMap>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from blog_message
@@ -17,11 +38,10 @@
   </delete>
     <insert id="insert" parameterType="com.lhamster.domain.BlogMessage">
     insert into blog_message (mes_id, mes_content, mes_likecount, 
-      mes_mestime, mes_top, mes_user_id,mes_parent_id
-      )
+      mes_mestime, mes_top, mes_user_id, mes_target_id, mes_parent_id)
     values (#{mesId,jdbcType=INTEGER}, #{mesContent,jdbcType=VARCHAR}, #{mesLikecount,jdbcType=INTEGER}, 
-      #{mesMestime,jdbcType=TIMESTAMP}, #{mesTop,jdbcType=BIT}, #{mesUserId,jdbcType=INTEGER}, #{mesParentId,jdbcType=INTEGER}
-      )
+      #{mesMestime,jdbcType=TIMESTAMP}, #{mesTop,jdbcType=BIT}, #{currUser.uId,jdbcType=INTEGER},
+      #{targetUser.uId,jdbcType=INTEGER}, #{mesParentId,jdbcType=INTEGER})
   </insert>
     <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogMessage">
     update blog_message
@@ -29,17 +49,52 @@
       mes_likecount = #{mesLikecount,jdbcType=INTEGER},
       mes_mestime = #{mesMestime,jdbcType=TIMESTAMP},
       mes_top = #{mesTop,jdbcType=BIT},
-      mes_user_id = #{mesUserId,jdbcType=INTEGER},
+      mes_user_id = #{currUser.uId},
+      mes_target_id = #{targetUser.uId},
       mes_parent_id = #{mesParentId,jdbcType=INTEGER}
     where mes_id = #{mesId,jdbcType=INTEGER}
   </update>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-    select mes_id, mes_content, mes_likecount, mes_mestime, mes_top, mes_user_id,mes_parent_id
+    <update id="setTop">
+        update blog_message
+        set mes_top = #{top}
+        where mes_id = #{id}
+    </update>
+    <select id="selectByPrimaryKey" resultMap="SingleResultMap" parameterType="java.lang.Integer">
+    select mes_id, mes_content, mes_likecount, mes_mestime, mes_top, mes_user_id, mes_target_id, mes_parent_id
     from blog_message
     where mes_id = #{mesId,jdbcType=INTEGER}
   </select>
     <select id="selectAll" resultMap="BaseResultMap">
-    select mes_id, mes_content, mes_likecount, mes_mestime, mes_top, mes_user_id,mes_parent_id
+        select mes_id, mes_content, mes_likecount, mes_mestime, mes_top, mes_user_id, mes_target_id, mes_parent_id
+        from blog_message
+        <where>
+            `mes_parent_id` is null
+            <if test="top != null">
+                and mes_top = #{top}
+            </if>
+            <if test="content != null and content != ''">
+                and mes_content like concat('%',#{content},'%')
+            </if>
+        </where>
+        order by
+        <choose>
+            <when test="like != null">
+                mes_likecount
+            </when>
+            <otherwise>mes_mestime</otherwise>
+        </choose>
+        desc
+    </select>
+    <select id="selectByParentId" resultMap="BaseResultMap">
+    select mes_id, mes_content, mes_likecount, mes_mestime, mes_top, mes_user_id, mes_target_id, mes_parent_id
     from blog_message
-  </select>
+    where mes_parent_id = #{parentId}
+    order by `mes_mestime`
+    </select>
+    <select id="selectByUserId" resultMap="SingleResultMap">
+    select mes_id, mes_content, mes_likecount, mes_mestime, mes_top, mes_user_id, mes_target_id, mes_parent_id
+    from blog_message
+    where mes_user_id = #{parseInt}
+    order by `mes_mestime` desc
+    </select>
 </mapper>
