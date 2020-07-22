@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.lhamster.mapper.BlogBookMapper" >
-  <resultMap id="BaseResultMap" type="com.lhamster.domain.BlogBook" >
-    <id column="b_id" property="bId" jdbcType="INTEGER" />
-    <result column="b_name" property="bName" jdbcType="VARCHAR" />
-    <result column="b_picture" property="bPicture" jdbcType="VARCHAR" />
-    <result column="b_discrible" property="bDiscrible" jdbcType="VARCHAR" />
-    <result column="b_booktime" property="bBooktime" jdbcType="TIMESTAMP" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+<mapper namespace="com.lhamster.mapper.BlogBookMapper">
+    <resultMap id="BaseResultMap" type="com.lhamster.domain.BlogBook">
+        <id column="b_id" property="bId" jdbcType="INTEGER"/>
+        <result column="b_name" property="bName" jdbcType="VARCHAR"/>
+        <result column="b_picture" property="bPicture" jdbcType="VARCHAR"/>
+        <result column="b_discrible" property="bDiscrible" jdbcType="VARCHAR"/>
+        <result column="b_booktime" property="bBooktime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from blog_book
     where b_id = #{bId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.lhamster.domain.BlogBook" >
-    insert into blog_book (b_id, b_name, b_picture, 
-      b_discrible, b_booktime)
-    values (#{bId,jdbcType=INTEGER}, #{bName,jdbcType=VARCHAR}, #{bPicture,jdbcType=VARCHAR}, 
-      #{bDiscrible,jdbcType=VARCHAR}, #{bBooktime,jdbcType=TIMESTAMP})
+    <insert id="insert" parameterType="com.lhamster.domain.BlogBook">
+    insert into blog_book (b_id, b_name, b_discrible, b_picture, b_booktime)
+    values (#{bId,jdbcType=INTEGER}, #{bName,jdbcType=VARCHAR}, #{bDiscrible,jdbcType=VARCHAR}, #{bPicture,jdbcType=VARCHAR}, #{bBooktime,jdbcType=TIMESTAMP})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogBook" >
+    <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogBook">
     update blog_book
     set b_name = #{bName,jdbcType=VARCHAR},
       b_picture = #{bPicture,jdbcType=VARCHAR},
@@ -26,13 +24,14 @@
       b_booktime = #{bBooktime,jdbcType=TIMESTAMP}
     where b_id = #{bId,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select b_id, b_name, b_picture, b_discrible, b_booktime
     from blog_book
     where b_id = #{bId,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
+    <select id="selectAll" resultMap="BaseResultMap">
     select b_id, b_name, b_picture, b_discrible, b_booktime
     from blog_book
+    order by `b_booktime` desc
   </select>
 </mapper>

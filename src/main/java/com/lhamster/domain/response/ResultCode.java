@@ -91,7 +91,17 @@ public enum ResultCode {
     MESSAGE_TOP_SUCCESS(6110, "留言置顶成功"),
     MESSAGE_TOP_FAILED(6112, "留言置顶失败"),
     MESSAGE_DELETE_SUCCESS(6115, "留言删除成功"),
-    MESSAGE_DELETE_FAILED(6116, "留言删除失败");
+    MESSAGE_DELETE_FAILED(6116, "留言删除失败"),
+
+    /*书籍：6201-6300*/
+    BOOK_UPLOAD_SUCCESS(6201, "书籍图片上传成功"),
+    BOOK_UPLOAD_FAILED(6202, "书籍图片上传失败"),
+    BOOK_ADD_SUCCESS(6210, "书籍添加成功"),
+    BOOK_ADD_FAILED(6211, "书籍添加失败"),
+    BOOK_UPDATE_SUCCESS(6220, "书籍修改成功"),
+    BOOK_UPDATE_FAILED(6221, "书籍修改失败"),
+    BOOK_DELETE_SUCCESS(6221, "书籍删除成功"),
+    BOOK_DELETE_FAILED(6221, "书籍删除失败");
 
     //操作代码
     private Integer code;

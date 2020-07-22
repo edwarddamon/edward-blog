@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-@Mapper
 public interface BlogArticleMapper {
     int deleteByPrimaryKey(Integer aId);
 

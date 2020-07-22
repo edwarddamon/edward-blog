@@ -42,6 +42,10 @@
 <br>
 
 <button id="updateBlog">修改博客</button>
+<br>
+<input type="file" id="bookPic">
+<input type="button" id="uploadBookPic" value="上传书籍图片">
+<img src="" alt="" id="bookUrl">
 </body>
 <script>
     $(function () {
@@ -125,6 +129,28 @@
                 },
                 success: function (data) {
                     console.log(data)
+                }
+            });
+        });
+
+        /*书籍图片上传*/
+        $('#uploadBookPic').click(function () {
+            /*实例化一个formData对象*/
+            var formData = new FormData();
+            formData.append("file", $('#bookPic')[0].files[0]);
+            $.ajax({
+                type: 'post',
+                url: 'book_pic',
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'type': 'front',
+                    'lhamster_identity_info': 'lhamster eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInVzZXJJZCI6IjEiLCJzdWIiOiJFZHdhcmQiLCJpc3MiOiIxIiwiaWF0IjoxNTk1NDEyMjMwLCJhdWQiOiJEYW1vbl9FZHdhcmQiLCJleHAiOjE1OTYwMTcwMzAsIm5iZiI6MTU5NTQxMjIzMH0.lna8fHHBPNnPC8jzvhjYqXx8LN1Ni8F2b45MuvxH6AA'
+                },
+                success: function (data) {
+                    console.log(data)
+                    $('#bookUrl').attr('src', data.data);
                 }
             });
         });
