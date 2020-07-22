@@ -16,5 +16,5 @@ edward's personal blog 个人博客系统，包括前台和后台，前台和后
 ## 第三方
  - QQ三方登录
  - 腾讯云短信服务
- - 腾讯云存储桶存放文件
+ - 腾讯云存储桶存放图片文件
  - Markdown 编辑器：Editor.md
