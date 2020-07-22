@@ -140,12 +140,13 @@
             formData.append("file", $('#bookPic')[0].files[0]);
             $.ajax({
                 type: 'post',
-                url: 'book_pic',
+                /*url: 'book_pic',*/
+                url: 'diary_pic',
                 data: formData,
                 processData: false,
                 contentType: false,
                 headers: {
-                    'type': 'front',
+                    'type': 'back',
                     'lhamster_identity_info': 'lhamster eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoidXNlciIsInVzZXJJZCI6IjEiLCJzdWIiOiJFZHdhcmQiLCJpc3MiOiIxIiwiaWF0IjoxNTk1NDEyMjMwLCJhdWQiOiJEYW1vbl9FZHdhcmQiLCJleHAiOjE1OTYwMTcwMzAsIm5iZiI6MTU5NTQxMjIzMH0.lna8fHHBPNnPC8jzvhjYqXx8LN1Ni8F2b45MuvxH6AA'
                 },
                 success: function (data) {

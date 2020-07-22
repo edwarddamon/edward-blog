@@ -100,8 +100,18 @@ public enum ResultCode {
     BOOK_ADD_FAILED(6211, "书籍添加失败"),
     BOOK_UPDATE_SUCCESS(6220, "书籍修改成功"),
     BOOK_UPDATE_FAILED(6221, "书籍修改失败"),
-    BOOK_DELETE_SUCCESS(6221, "书籍删除成功"),
-    BOOK_DELETE_FAILED(6221, "书籍删除失败");
+    BOOK_DELETE_SUCCESS(6230, "书籍删除成功"),
+    BOOK_DELETE_FAILED(6231, "书籍删除失败"),
+
+    /*日记：6301-6400*/
+    DIARY_UPLOAD_SUCCESS(6301, "日记图片上传成功"),
+    DIARY_UPLOAD_FAILED(6302, "日记图片上传失败"),
+    DIARY_ADD_SUCCESS(6310, "日记添加成功"),
+    DIARY_ADD_FAILED(6312, "日记添加失败"),
+    DIARY_UPDATE_SUCCESS(6320, "日记修改成功"),
+    DIARY_UPDATE_FAILED(6322, "日记修改失败"),
+    DIARY_DELETE_SUCCESS(6330, "日记删除成功"),
+    DIARY_DELETE_FAILED(6332, "日记删除失败");
 
     //操作代码
     private Integer code;
