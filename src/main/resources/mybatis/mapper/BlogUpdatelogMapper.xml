@@ -1,34 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.lhamster.mapper.BlogUpdatelogMapper" >
-  <resultMap id="BaseResultMap" type="com.lhamster.domain.BlogUpdatelog" >
-    <id column="up_id" property="upId" jdbcType="INTEGER" />
-    <result column="up_updatetime" property="upUpdatetime" jdbcType="TIMESTAMP" />
-    <result column="up_content" property="upContent" jdbcType="LONGVARCHAR" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+<mapper namespace="com.lhamster.mapper.BlogUpdatelogMapper">
+    <resultMap id="BaseResultMap" type="com.lhamster.domain.BlogUpdatelog">
+        <id column="up_id" property="upId" jdbcType="INTEGER"/>
+        <result column="up_updatetime" property="upUpdatetime" jdbcType="TIMESTAMP"/>
+        <result column="up_content" property="upContent" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from blog_updatelog
     where up_id = #{upId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.lhamster.domain.BlogUpdatelog" >
+    <insert id="insert" parameterType="com.lhamster.domain.BlogUpdatelog">
     insert into blog_updatelog (up_id, up_updatetime, up_content
       )
     values (#{upId,jdbcType=INTEGER}, #{upUpdatetime,jdbcType=TIMESTAMP}, #{upContent,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogUpdatelog" >
+    <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogUpdatelog">
     update blog_updatelog
     set up_updatetime = #{upUpdatetime,jdbcType=TIMESTAMP},
       up_content = #{upContent,jdbcType=LONGVARCHAR}
     where up_id = #{upId,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select up_id, up_updatetime, up_content
     from blog_updatelog
     where up_id = #{upId,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
+    <select id="selectAll" resultMap="BaseResultMap">
     select up_id, up_updatetime, up_content
     from blog_updatelog
+    order by `up_updatetime` desc
   </select>
 </mapper>

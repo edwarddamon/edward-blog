@@ -111,7 +111,15 @@ public enum ResultCode {
     DIARY_UPDATE_SUCCESS(6320, "日记修改成功"),
     DIARY_UPDATE_FAILED(6322, "日记修改失败"),
     DIARY_DELETE_SUCCESS(6330, "日记删除成功"),
-    DIARY_DELETE_FAILED(6332, "日记删除失败");
+    DIARY_DELETE_FAILED(6332, "日记删除失败"),
+
+    /*更新日志：6401-6500*/
+    LOG_ADD_SUCCESS(6401, "更新日志添加成功"),
+    LOG_ADD_FAILED(6402, "更新日志添加失败"),
+    LOG_UPDATE_SUCCESS(6410, "更新日志修改成功"),
+    LOG_UPDATE_FAILED(6412, "更新日志修改失败"),
+    LOG_DELETE_SUCCESS(6420, "更新日志删除成功"),
+    LOG_DELETE_FAILED(6422, "更新日志删除失败");
 
     //操作代码
     private Integer code;

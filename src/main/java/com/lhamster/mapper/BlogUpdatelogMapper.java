@@ -1,6 +1,7 @@
 package com.lhamster.mapper;
 
 import com.lhamster.domain.BlogUpdatelog;
+
 import java.util.List;
 
 public interface BlogUpdatelogMapper {
