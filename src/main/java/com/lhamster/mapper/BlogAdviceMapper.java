@@ -1,7 +1,6 @@
 package com.lhamster.mapper;
 
 import com.lhamster.domain.BlogAdvice;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
@@ -12,7 +11,7 @@ public interface BlogAdviceMapper {
 
     BlogAdvice selectByPrimaryKey(Integer adId);
 
-    List<BlogAdvice> selectAll();
+    List<BlogAdvice> selectAll(Integer userId);
 
     int updateByPrimaryKey(BlogAdvice record);
 }

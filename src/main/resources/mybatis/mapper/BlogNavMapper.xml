@@ -1,34 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.lhamster.mapper.BlogNavMapper" >
-  <resultMap id="BaseResultMap" type="com.lhamster.domain.BlogNav" >
-    <id column="nav_id" property="navId" jdbcType="INTEGER" />
-    <result column="nav_content" property="navContent" jdbcType="VARCHAR" />
-    <result column="nav_url" property="navUrl" jdbcType="VARCHAR" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+<mapper namespace="com.lhamster.mapper.BlogNavMapper">
+    <resultMap id="BaseResultMap" type="com.lhamster.domain.BlogNav">
+        <id column="nav_id" property="navId" jdbcType="INTEGER"/>
+        <result column="nav_content" property="navContent" jdbcType="VARCHAR"/>
+        <result column="nav_url" property="navUrl" jdbcType="VARCHAR"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from blog_nav
     where nav_id = #{navId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.lhamster.domain.BlogNav" >
+    <insert id="insert" parameterType="com.lhamster.domain.BlogNav">
     insert into blog_nav (nav_id, nav_content, nav_url
       )
     values (#{navId,jdbcType=INTEGER}, #{navContent,jdbcType=VARCHAR}, #{navUrl,jdbcType=VARCHAR}
       )
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogNav" >
+    <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogNav">
     update blog_nav
     set nav_content = #{navContent,jdbcType=VARCHAR},
       nav_url = #{navUrl,jdbcType=VARCHAR}
     where nav_id = #{navId,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select nav_id, nav_content, nav_url
     from blog_nav
     where nav_id = #{navId,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
+    <select id="selectAll" resultMap="BaseResultMap">
     select nav_id, nav_content, nav_url
     from blog_nav
+    order by nav_id
   </select>
 </mapper>

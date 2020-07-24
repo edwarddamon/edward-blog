@@ -22,6 +22,8 @@
     <script src="editor.md-master/editormd.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
+<a href="#" id="get">获取</a>
+<br>
 上传头像:
 <input type="file" id="content">
 <input type="button" id="up" value="上传">
@@ -49,6 +51,17 @@
 </body>
 <script>
     $(function () {
+        $('#get').click(function () {
+            $.ajax({
+                url: "http://localhost:8080/edwardBlog/advice?pageNum=1&pageSize=10",
+                headers: {
+                    'type': 'front'
+                },
+                success: function (data) {
+                    console.log(data);
+                }
+            })
+        });
         $('#up').click(function () {
             /*实例化一个formData对象*/
             var formData = new FormData();

@@ -21,7 +21,8 @@ import java.util.List;
 public class JwtInterceptor implements HandlerInterceptor {
     // 前台指定拦截的url地址
     private List<String> urlList = new ArrayList<>(Arrays.asList("/user", "/upLoadFile", "user-back", "/comment-me", "/comment",
-            "/article_pic", "/inform", "/blog-message", "/book_pic", "/book", "/diary_pic", "/diary", "/update-log", "/friend-blog"));
+            "/article_pic", "/inform", "/blog-message", "/book_pic", "/book", "/diary_pic", "/diary", "/update-log", "/friend-blog",
+            "/nav", "/tag", "/advice", "/bug"));
 
     @Autowired
     private Audience audience;

@@ -1,36 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.lhamster.mapper.BlogBugMapper" >
-  <resultMap id="BaseResultMap" type="com.lhamster.domain.BlogBug" >
-    <id column="bug_id" property="bugId" jdbcType="INTEGER" />
-    <result column="bug_time" property="bugTime" jdbcType="TIMESTAMP" />
-    <result column="bug_user_id" property="bugUserId" jdbcType="INTEGER" />
-    <result column="bug_content" property="bugContent" jdbcType="LONGVARCHAR" />
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+<mapper namespace="com.lhamster.mapper.BlogBugMapper">
+    <resultMap id="BaseResultMap" type="com.lhamster.domain.BlogBug">
+        <id column="bug_id" property="bugId" jdbcType="INTEGER"/>
+        <result column="bug_time" property="bugTime" jdbcType="TIMESTAMP"/>
+        <result column="bug_content" property="bugContent" jdbcType="LONGVARCHAR"/>
+        <!--级联用户-->
+        <association property="user" column="bug_user_id" javaType="com.lhamster.domain.BlogUser"
+                     select="com.lhamster.mapper.BlogUserMapper.selectById"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from blog_bug
     where bug_id = #{bugId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.lhamster.domain.BlogBug" >
+    <insert id="insert" parameterType="com.lhamster.domain.BlogBug">
     insert into blog_bug (bug_id, bug_time, bug_user_id, 
       bug_content)
-    values (#{bugId,jdbcType=INTEGER}, #{bugTime,jdbcType=TIMESTAMP}, #{bugUserId,jdbcType=INTEGER}, 
+    values (#{bugId,jdbcType=INTEGER}, #{bugTime,jdbcType=TIMESTAMP}, #{user.uId,jdbcType=INTEGER},
       #{bugContent,jdbcType=LONGVARCHAR})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogBug" >
+    <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogBug">
     update blog_bug
     set bug_time = #{bugTime,jdbcType=TIMESTAMP},
       bug_user_id = #{bugUserId,jdbcType=INTEGER},
       bug_content = #{bugContent,jdbcType=LONGVARCHAR}
     where bug_id = #{bugId,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
     select bug_id, bug_time, bug_user_id, bug_content
     from blog_bug
     where bug_id = #{bugId,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap" >
-    select bug_id, bug_time, bug_user_id, bug_content
-    from blog_bug
-  </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select bug_id, bug_time, bug_user_id, bug_content
+        from blog_bug
+        <where>
+            <if test="userId != null">
+                bug_user_id = #{userId}
+            </if>
+        </where>
+        order by bug_time desc
+    </select>
 </mapper>

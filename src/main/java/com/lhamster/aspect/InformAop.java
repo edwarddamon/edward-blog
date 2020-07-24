@@ -5,6 +5,7 @@ import com.lhamster.domain.BlogInform;
 import com.lhamster.domain.BlogUser;
 import com.lhamster.mapper.BlogInformMapper;
 import com.lhamster.mapper.BlogUserMapper;
+import jdk.nashorn.internal.scripts.JO;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -100,5 +101,23 @@ public class InformAop {
     @AfterReturning(value = "execution(* com.lhamster.service.impl.FriendBlogServiceImpl.updateFrientBlog(..))", returning = "res")
     public void updateFriendBlog(BlogFriendblog res) {
         InsertInform(res.getUser().getUId(), res.getFBackinfo());
+    }
+
+    /**
+     * 添加建议
+     */
+    @AfterReturning(value = "execution(* com.lhamster.service.impl.AdviceServiceImpl.addAdvice(..))")
+    public void addAdvice(JoinPoint joinPoint) {
+        Integer userId = Integer.valueOf(joinPoint.getArgs()[2].toString());
+        InsertInform(userId, "恭喜您，建议发表成功！");
+    }
+
+    /**
+     * 添加bug反馈
+     */
+    @AfterReturning("execution(* com.lhamster.service.impl.BugServiceImpl.addBug(..))")
+    public void addBug(JoinPoint joinPoint) {
+        Integer userId = Integer.valueOf(joinPoint.getArgs()[1].toString());
+        InsertInform(userId, "恭喜您，bug反馈添加成功!");
     }
 }

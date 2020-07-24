@@ -10,7 +10,7 @@ public interface BlogBugMapper {
 
     BlogBug selectByPrimaryKey(Integer bugId);
 
-    List<BlogBug> selectAll();
+    List<BlogBug> selectAll(Integer userId);
 
     int updateByPrimaryKey(BlogBug record);
 }

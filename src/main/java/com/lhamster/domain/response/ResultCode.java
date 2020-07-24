@@ -129,7 +129,35 @@ public enum ResultCode {
     FRIEND_UPDATE_SUCCESS(6520, "友链更新成功"),
     FRIEND_UPDATE_FAILED(6522, "友链更新失败"),
     FRIEND_DELETE_SUCCESS(6530, "友链删除成功"),
-    FRIEND_DELETE_FAILED(6532, "友链删除失败");
+    FRIEND_DELETE_FAILED(6532, "友链删除失败"),
+
+    /*导航栏数据：6601-6700*/
+    NAV_ADD_SUCCESS(6601, "导航栏数据添加成功"),
+    NAV_ADD_FAILED(6602, "导航栏数据添加失败"),
+    NAV_UPDATE_SUCCESS(6610, "导航栏数据修改成功"),
+    NAV_UPDATE_FAILED(6612, "导航栏数据修改失败"),
+    NAV_DELETE_SUCCESS(6620, "导航栏数据删除成功"),
+    NAV_DELETE_FAILED(6622, "导航栏数据删除失败"),
+
+    /*标签：6701-6800*/
+    TAG_ADD_SUCCESS(6701, "标签添加成功"),
+    TAG_ADD_FAILED(6702, "标签添加失败"),
+    TAG_UPDATE_SUCCESS(6710, "标签更新成功"),
+    TAG_UPDATE_FAILED(6712, "标签更新失败"),
+    TAG_DELETE_SUCCESS(6720, "标签删除成功"),
+    TAG_DELETE_FAILED(6722, "标签删除失败"),
+
+    /*建议：6801-6900*/
+    AFVICE_ADD_SUCCESS(6801, "建议添加成功"),
+    AFVICE_ADD_FAILED(6802, "建议添加失败"),
+    AFVICE_DELETE_SUCCESS(6810, "建议删除成功"),
+    AFVICE_DELETE_FAILED(6812, "建议删除失败"),
+
+    /*bug：6901-7000*/
+    BUG_ADD_SUCCESS(6901, "BUG反馈成功"),
+    BUG_ADD_FAILED(6902, "BUG反馈失败"),
+    BUG_DELETE_SUCCESS(6910, "BUG反馈删除成功"),
+    BUG_DELETE_FAILED(6912, "BUG反馈删除失败");
 
     //操作代码
     private Integer code;
