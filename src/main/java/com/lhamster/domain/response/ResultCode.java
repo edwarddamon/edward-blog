@@ -119,7 +119,17 @@ public enum ResultCode {
     LOG_UPDATE_SUCCESS(6410, "更新日志修改成功"),
     LOG_UPDATE_FAILED(6412, "更新日志修改失败"),
     LOG_DELETE_SUCCESS(6420, "更新日志删除成功"),
-    LOG_DELETE_FAILED(6422, "更新日志删除失败");
+    LOG_DELETE_FAILED(6422, "更新日志删除失败"),
+
+    /*友链：6501-6600*/
+    FRIEND_ADD_SUCCESS(6501, "友链申请提交成功"),
+    FRIEND_ADD_FAILED(6502, "友链申请提交失败"),
+    FRIEND_CHECK_SUCCESS(6510, "友链审核成功"),
+    FRIEND_CHECK_FAILED(6512, "友链审核失败"),
+    FRIEND_UPDATE_SUCCESS(6520, "友链更新成功"),
+    FRIEND_UPDATE_FAILED(6522, "友链更新失败"),
+    FRIEND_DELETE_SUCCESS(6530, "友链删除成功"),
+    FRIEND_DELETE_FAILED(6532, "友链删除失败");
 
     //操作代码
     private Integer code;

@@ -16,5 +16,6 @@ public class BlogFriendblog {
     private Integer fStatus;
     private String fBackinfo;
     private Date fFriendblogtime;
-    private Integer fUserId;
+    /*用户*/
+    private BlogUser user;
 }

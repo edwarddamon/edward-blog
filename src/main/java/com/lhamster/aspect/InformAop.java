@@ -1,5 +1,6 @@
 package com.lhamster.aspect;
 
+import com.lhamster.domain.BlogFriendblog;
 import com.lhamster.domain.BlogInform;
 import com.lhamster.domain.BlogUser;
 import com.lhamster.mapper.BlogInformMapper;
@@ -70,5 +71,34 @@ public class InformAop {
         // 根据手机号查询用户id
         Integer userId = blogUserMapper.selectKeyByPhone(phone);
         InsertInform(userId, "恭喜您，重置密码成功!");
+    }
+
+    /**
+     * 申请友链通知
+     *
+     * @param joinPoint
+     */
+    @AfterReturning(value = "execution(* com.lhamster.service.impl.FriendBlogServiceImpl.addFriendBlog(..))")
+    public void addFriendBlog(JoinPoint joinPoint) {
+        Integer userId = Integer.valueOf(joinPoint.getArgs()[2].toString());
+        InsertInform(userId, "恭喜您，已申请友链，正在审核中，请耐心等待...");
+    }
+
+    /**
+     * 友链审核结果
+     *
+     * @param res
+     */
+    @AfterReturning(value = "execution(* com.lhamster.service.impl.FriendBlogServiceImpl.checkFriendBlog(..))", returning = "res")
+    public void checkFriendBlog(BlogFriendblog res) {
+        InsertInform(res.getUser().getUId(), res.getFBackinfo());
+    }
+
+    /**
+     * 更新友链
+     */
+    @AfterReturning(value = "execution(* com.lhamster.service.impl.FriendBlogServiceImpl.updateFrientBlog(..))", returning = "res")
+    public void updateFriendBlog(BlogFriendblog res) {
+        InsertInform(res.getUser().getUId(), res.getFBackinfo());
     }
 }
