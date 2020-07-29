@@ -21,6 +21,6 @@
  - QQ三方登录
  - 腾讯云短信服务
  - 腾讯云存储桶存放图片文件
- - Markdown 编辑器：Editor.md
+ - Markdown 编辑器：mavon-editor
  
 ## 3.项目设计图
