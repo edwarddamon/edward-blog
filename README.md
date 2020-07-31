@@ -9,7 +9,7 @@
 ## 3.技术栈&&相关工具
 ### 前端
 - vue
-- iviewui组件库
+- iview ui组件库
 - mavon-editor
 ### 后端
  - JWT鉴权
