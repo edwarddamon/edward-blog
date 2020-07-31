@@ -8,6 +8,9 @@
 
 ## 3.技术栈&&相关工具
 ### 前端
+- vue
+- iviewui组件库
+- mavon-editor
 ### 后端
  - JWT鉴权
  - Restful风格API
@@ -20,7 +23,7 @@
  - 阿里云CentOs7云服务器
  - nginx反向代理服务器部署前端vue项目
  - springboot项目打包成jar包直接运行
-### 第三方
+## 4.第三方
  - QQ三方登录
  - 腾讯云短信服务
  - 腾讯云存储桶存放图片文件
