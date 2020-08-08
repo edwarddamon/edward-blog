@@ -13,8 +13,11 @@ import java.util.Date;
 public class BlogInform {
     private Integer inId;
     private String inContent;
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date inInformtime;
     private Boolean inRead;
     private Integer inUserId;
+
+    /*级联用户*/
+    private BlogUser user;
 }

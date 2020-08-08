@@ -15,7 +15,7 @@
         <association property="currUser" column="mes_user_id" javaType="com.lhamster.domain.BlogUser"
                      select="com.lhamster.mapper.BlogUserMapper.selectByPrimaryKey"/>
         <!--子留言-->
-        <collection property="blogMessageList" column="mes_id" ofType="com.lhamster.domain.BlogMessage"
+        <collection property="children" column="mes_id" ofType="com.lhamster.domain.BlogMessage"
                     select="com.lhamster.mapper.BlogMessageMapper.selectByParentId"/>
     </resultMap>
     <resultMap id="SingleResultMap" type="com.lhamster.domain.BlogMessage">
@@ -69,7 +69,7 @@
         from blog_message
         <where>
             `mes_parent_id` is null
-            <if test="top != null">
+            <if test="top">
                 and mes_top = #{top}
             </if>
             <if test="content != null and content != ''">
@@ -78,7 +78,7 @@
         </where>
         order by
         <choose>
-            <when test="like != null">
+            <when test="like">
                 mes_likecount
             </when>
             <otherwise>mes_mestime</otherwise>

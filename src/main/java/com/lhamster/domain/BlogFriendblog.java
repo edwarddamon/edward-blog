@@ -16,7 +16,7 @@ public class BlogFriendblog {
     private String fUrl;
     private Integer fStatus;
     private String fBackinfo;
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date fFriendblogtime;
     /*用户*/
     private BlogUser user;

@@ -100,12 +100,8 @@
         u_admin
         from blog_user
         <where>
-            <if test="userPhone != null and userPhone != ''">
-                u_phone = #{userPhone}
-            </if>
-            <if test="password != null and password != ''">
-                and u_password = #{password}
-            </if>
+            u_phone = #{userPhone}
+            and u_password = #{password}
             <if test="type != 'front'">
                 and u_admin = 1
             </if>

@@ -103,20 +103,21 @@ public class ArticleController {
      * @return
      */
     @PostMapping("/article")
-    public Result article(String title, String content, Integer categoryId, @RequestParam("pictures[]") String pictures, HttpServletRequest request) {
-        if (StringUtils.isEmpty(title) || StringUtils.isEmpty(content) || StringUtils.isEmpty(categoryId) || StringUtils.isEmpty(pictures)) {
+    public Result article(String title, String desc, String content, Integer categoryId, String pictures, HttpServletRequest request) {
+        if (StringUtils.isEmpty(title) || StringUtils.isEmpty(desc) || StringUtils.isEmpty(content) || StringUtils.isEmpty(categoryId)) {
             throw new ResultException(ResultCode.EMPTY);
         }
         log.info("标题===" + title);
+        log.info("描述===" + desc);
         log.info("内容===" + content);
         log.info("分类id===" + categoryId);
-        log.info("图片地址===" + pictures);
         // 获取用户id
         String userId = JwtTokenUtil.getUserId(request.getHeader("lhamster_identity_info").substring(9), audience.getBase64Secret());
         try {
             BlogArticle article = new BlogArticle();
             article.setATitle(title);
             article.setAContent(content);
+            article.setADesc(desc);
             article.setACreatetime(new Date());
             article.setALikecount(0);
             article.setAVisitcount(0);
@@ -179,16 +180,16 @@ public class ArticleController {
      * @return
      */
     @PutMapping("/article")
-    public Result updateArticle(Integer id, String title, String content, @RequestParam("pictures[]") String pictures) {
-        if (StringUtils.isEmpty(id) || StringUtils.isEmpty(title) || StringUtils.isEmpty(content) || StringUtils.isEmpty(pictures)) {
+    public Result updateArticle(Integer id, String desc, Integer cateId, String title, String content, String pictures) {
+        if (StringUtils.isEmpty(id) || StringUtils.isEmpty(title) || StringUtils.isEmpty(desc) || StringUtils.isEmpty(cateId) || StringUtils.isEmpty(content)) {
             throw new ResultException(ResultCode.EMPTY);
         }
         log.info("id===" + id);
         log.info("标题===" + title);
+        log.info("描述===" + desc);
         log.info("内容===" + content);
-        log.info("图片地址===" + pictures);
         try {
-            articleService.updateArticle(id, title, content, pictures);
+            articleService.updateArticle(id, desc, title, content, cateId, pictures);
             return new Result(ResultCode.ARTICLE_UPDATE_SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();

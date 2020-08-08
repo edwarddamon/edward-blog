@@ -13,7 +13,7 @@ public interface ArticleService {
 
     Result<List<BlogArticle>> queryMoreArticle(QueryVo vo);/*博客列表*/
 
-    BlogArticle updateArticle(Integer id, String title, String content, String pictures);/*修改文章*/
+    BlogArticle updateArticle(Integer id, String desc, String title, String content, Integer cateId, String pictures);/*修改文章*/
 
     BlogArticle deleteArticle(Integer id, Boolean status);/*假删除*/
 

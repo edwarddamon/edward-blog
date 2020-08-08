@@ -42,6 +42,8 @@ public class UserServiceImpl implements UserService {
         blogUser.setUHeadpicture(headPic);
         // 初始化nickname
         blogUser.setUNickname(blogUser.getUPhone());
+        // 初始化admin
+        blogUser.setUAdmin(false);
         blogUserMapper.insert(blogUser);
     }
 

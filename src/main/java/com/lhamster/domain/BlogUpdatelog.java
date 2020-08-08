@@ -12,7 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class BlogUpdatelog {
     private Integer upId;
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date upUpdatetime;
     private String upContent;
 }

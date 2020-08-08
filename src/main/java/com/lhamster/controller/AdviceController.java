@@ -38,7 +38,7 @@ public class AdviceController {
      * @return
      */
     @GetMapping("/advice")
-    public Result<List<BlogAdvice>> advice(QueryVo vo, @RequestParam(value = "my", defaultValue = "false") Boolean my, HttpServletRequest request) {
+    public Result<List<BlogAdvice>> advice(QueryVo vo, Boolean my, HttpServletRequest request) {
         if (StringUtils.isEmpty(vo.getPageNum()) || StringUtils.isEmpty(vo.getPageSize())) {
             throw new ResultException(ResultCode.EMPTY);
         }

@@ -62,9 +62,6 @@ public class FriendBlogServiceImpl implements FriendBlogService {
     @CacheEvict(cacheNames = "friendBlog", key = "#root.targetClass")
     public BlogFriendblog checkFriendBlog(Integer friendId, Integer status, String reason) {
         BlogFriendblog friendblog = blogFriendblogMapper.selectByPrimaryKey(friendId);
-        if (status.equals(1)) {
-            reason = "很遗憾，您申请的友链[" + friendblog.getFName() + "]没有通过审核；原因：" + reason;
-        }
         if (status.equals(2)) {
             reason = "恭喜您，您申请的友链[" + friendblog.getFName() + "]已通过审核";
         }

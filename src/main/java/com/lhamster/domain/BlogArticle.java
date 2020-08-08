@@ -13,7 +13,8 @@ import java.util.Date;
 public class BlogArticle {
     private Integer aId;
     private String aTitle;
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+8")
+    private String aDesc;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date aCreatetime;
     private Integer aLikecount;
     private Integer aVisitcount;
@@ -22,4 +23,10 @@ public class BlogArticle {
     private Integer aCateId;
     private Integer aUserId;
     private String aContent;
+
+    /*级联文章类型*/
+    private BlogCategory cate;
+
+    /*级联文章作者*/
+    private BlogUser user;
 }

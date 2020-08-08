@@ -7,6 +7,9 @@
         <result column="in_informtime" property="inInformtime" jdbcType="TIMESTAMP"/>
         <result column="in_read" property="inRead" jdbcType="BIT"/>
         <result column="in_user_id" property="inUserId" jdbcType="INTEGER"/>
+        <!--级联用户-->
+        <association property="user" column="in_user_id" javaType="com.lhamster.domain.BlogUser"
+                     select="com.lhamster.mapper.BlogUserMapper.selectById"/>
     </resultMap>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from blog_inform
@@ -33,10 +36,10 @@
         from blog_inform
         <where>
             <if test="read != null">
-                in_read = #{read}
+                `in_read` = #{read}
             </if>
             <if test="userId != null">
-                and in_user_id = #{userId}
+                and `in_user_id` = #{userId}
             </if>
         </where>
         order by in_informtime desc
@@ -45,5 +48,9 @@
         select in_id, in_content, in_informtime, in_read, in_user_id
         from blog_inform
         where in_user_id = #{userId}
+    </select>
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(1) from blog_inform
+        where in_user_id = #{userId} and `in_read` = false
     </select>
 </mapper>

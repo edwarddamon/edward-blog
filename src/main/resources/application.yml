@@ -5,7 +5,7 @@ audience:
   # 代表这个JWT的接收对象,存入audience
   clientId: 1
   # 密钥, 经过Base64加密, 可自行替换(important)
-  base64Secret: com.lhamster.cn
+  base64Secret: yourSecret
   # JWT的签发主体，存入issuer
   name: Damon_Edward
   # 过期时间（配置成默认七天失效），时间戳(单位是毫秒)

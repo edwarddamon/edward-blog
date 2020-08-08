@@ -12,11 +12,13 @@ import java.util.List;
  * @date 2020/7/18
  */
 public interface InformService {
-    Result<List<BlogInform>> selectAll(QueryVo vo, Boolean read, String userId);/*消息列表*/
+    Result<List<BlogInform>> selectAll(QueryVo vo, Integer read, Integer userId);/*消息列表*/
 
     void setRead(Integer informId);/*设置消息已读*/
 
     void setAllRead(String userId);/*设置全部已读*/
 
     void deleteInform(Integer informId);/*删除消息通知*/
+
+    Integer selectCount(Integer userId);
 }

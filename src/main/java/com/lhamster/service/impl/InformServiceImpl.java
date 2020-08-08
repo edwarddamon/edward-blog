@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -29,9 +28,17 @@ public class InformServiceImpl implements InformService {
     private BlogInformMapper blogInformMapper;
 
     @Override
-    public Result<List<BlogInform>> selectAll(QueryVo vo, Boolean read, String userId) {
+    public Result<List<BlogInform>> selectAll(QueryVo vo, Integer read, Integer userId) {
+        Boolean status = null;
+        if (read.equals(1)) {
+            status = false;
+        }
+        if (read.equals(2)) {
+            status = true;
+        }
+        System.out.println(userId);
         Page<Object> page = PageHelper.startPage(vo.getPageNum(), vo.getPageSize());
-        return new Result<>(ResultCode.SUCCESS, blogInformMapper.selectAll(read, Integer.parseInt(userId)), (int) page.getTotal());
+        return new Result<>(ResultCode.SUCCESS, blogInformMapper.selectAll(status, userId), (int) page.getTotal());
     }
 
     @Override
@@ -50,5 +57,10 @@ public class InformServiceImpl implements InformService {
     @Override
     public void deleteInform(Integer informId) {
         blogInformMapper.deleteByPrimaryKey(informId);
+    }
+
+    @Override
+    public Integer selectCount(Integer userId) {
+        return blogInformMapper.selectCount(userId);
     }
 }

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Damon_Edward
@@ -57,9 +59,10 @@ public class LoginController {
             BlogUser user = userService.loginThird(openId, userInfo.getString("nickname"), userInfo.getString("figureurl_qq_1"), userInfo.getString("gender"));
             // 生成token
             String token = JwtTokenUtil.createJWT(user.getUId().toString(), user.getUNickname(), "user", audience);
-            // 将token存入响应头返回给前端
-            response.setHeader(JwtTokenUtil.AUTH_HEADER_KEY, JwtTokenUtil.TOKEN_PREFIX + token);
-            return new Result(ResultCode.USER_LOGIN_SUCCESS);
+            Map<String, String> map = new HashMap<>();
+            map.put(JwtTokenUtil.AUTH_HEADER_KEY, JwtTokenUtil.TOKEN_PREFIX + token);
+            // 将token存入响应体中返回给前端
+            return new Result<>(ResultCode.USER_LOGIN_SUCCESS, map);
         } catch (Exception e) {
             e.printStackTrace();
             throw new ResultException(ResultCode.USER_LOGIN_FAILED);

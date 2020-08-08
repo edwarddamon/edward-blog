@@ -15,7 +15,7 @@ public class BlogMessage {
     private Integer mesId;
     private String mesContent;
     private Integer mesLikecount;
-    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date mesMestime;
     private Boolean mesTop;
     private Integer mesParentId;
@@ -27,5 +27,5 @@ public class BlogMessage {
     private BlogUser currUser;
 
     /*子留言*/
-    private List<BlogMessage> blogMessageList;
+    private List<BlogMessage> children;
 }

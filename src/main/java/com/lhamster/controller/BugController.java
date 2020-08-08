@@ -37,7 +37,7 @@ public class BugController {
      * @return
      */
     @GetMapping("/bug")
-    public Result<List<BlogBug>> bugs(QueryVo vo, @RequestParam(value = "my", defaultValue = "false") Boolean my, HttpServletRequest request) {
+    public Result<List<BlogBug>> bugs(QueryVo vo, Boolean my, HttpServletRequest request) {
         if (StringUtils.isEmpty(vo.getPageNum()) || StringUtils.isEmpty(vo.getPageSize())) {
             throw new ResultException(ResultCode.EMPTY);
         }

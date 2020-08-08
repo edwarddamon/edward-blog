@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.PublicKey;
 import java.util.List;
 
 /**
@@ -37,13 +38,22 @@ public class InformController {
      * @return
      */
     @GetMapping("/inform")
-    public Result<List<BlogInform>> inform(QueryVo vo, Boolean read, HttpServletRequest request) {
-        if (StringUtils.isEmpty(vo.getPageNum()) || StringUtils.isEmpty(vo.getPageSize())) {
+    public Result<List<BlogInform>> inform(QueryVo vo, Integer read, Boolean my, HttpServletRequest request) {
+        if (StringUtils.isEmpty(vo.getPageNum()) || StringUtils.isEmpty(vo.getPageSize()) || StringUtils.isEmpty(read) || StringUtils.isEmpty(my)) {
             throw new ResultException(ResultCode.EMPTY);
         }
-        // 获取用户id
-        String userId = JwtTokenUtil.getUserId(request.getHeader("lhamster_identity_info").substring(9), audience.getBase64Secret());
+        Integer userId = null;
+        if (my) {
+            // 获取用户id
+            userId = Integer.valueOf(JwtTokenUtil.getUserId(request.getHeader("lhamster_identity_info").substring(9), audience.getBase64Secret()));
+        }
         return informService.selectAll(vo, read, userId);
+    }
+
+    @GetMapping("/informCount")
+    public Integer informCount(HttpServletRequest request) {
+        Integer userId = Integer.valueOf(JwtTokenUtil.getUserId(request.getHeader("lhamster_identity_info").substring(9), audience.getBase64Secret()));
+        return informService.selectCount(userId);
     }
 
     /**

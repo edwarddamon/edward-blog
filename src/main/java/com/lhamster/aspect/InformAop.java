@@ -92,6 +92,9 @@ public class InformAop {
      */
     @AfterReturning(value = "execution(* com.lhamster.service.impl.FriendBlogServiceImpl.checkFriendBlog(..))", returning = "res")
     public void checkFriendBlog(BlogFriendblog res) {
+        if (res.getFStatus().equals(1)) {
+            InsertInform(res.getUser().getUId(), "很遗憾，您申请的友链[" + res.getFName() + "]没有通过审核；原因：" + res.getFBackinfo());
+        }
         InsertInform(res.getUser().getUId(), res.getFBackinfo());
     }
 

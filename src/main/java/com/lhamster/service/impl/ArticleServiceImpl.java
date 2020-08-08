@@ -46,45 +46,27 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Result<List<BlogArticle>> queryMoreArticle(QueryVo vo) {
+        if (vo.getStatus() != 1) {
+            vo.setStatus(null);
+        }
+        if (vo.getCateId() != null && vo.getCateId().equals(0)) {
+            vo.setCateId(null);
+        }
         Page<Object> page = PageHelper.startPage(vo.getPageNum(), vo.getPageSize());
         return new Result<>(ResultCode.SUCCESS, blogArticleMapper.selectAll(vo), (int) page.getTotal());
     }
 
     @Override
     @CachePut(cacheNames = "article", key = "#id")
-    public BlogArticle updateArticle(Integer id, String title, String content, String pictures) {
-        List<String> oldPic = new ArrayList<>();
-        List<String> newPic = new ArrayList<>();
-        String pic = pictures;
+    public BlogArticle updateArticle(Integer id, String desc, String title, String content, Integer cateId, String pictures) {
         // 查询该文章原先的内容
         BlogArticle article = blogArticleMapper.selectByPrimaryKey(id);
-        // 删除腾讯云上文章中丢弃的图片
-        String oldPicUrl = article.getAPicture();
-        while (!StringUtils.isEmpty(oldPicUrl)) {
-            if (!oldPicUrl.contains(",")) {
-                oldPic.add(oldPicUrl);
-                break;
-            }
-            oldPic.add(oldPicUrl.substring(0, oldPicUrl.indexOf(",")));
-            oldPicUrl = oldPicUrl.substring(oldPicUrl.indexOf(",") + 1);
-        }
-        while (!StringUtils.isEmpty(pictures)) {
-            if (!pictures.contains(",")) {
-                newPic.add(pictures);
-                break;
-            }
-            newPic.add(pictures.substring(0, pictures.indexOf(",")));
-            pictures = pictures.substring(pictures.indexOf(",") + 1);
-        }
-        for (String odlUrl : oldPic) {
-            if (!newPic.contains(odlUrl)) {
-                TencentCOSUtil.deletefile("articlePicture/" + odlUrl.substring(odlUrl.lastIndexOf("/") + 1));
-            }
-        }
         // 设置新内容
         article.setATitle(title);
+        article.setADesc(desc);
         article.setAContent(content);
-        article.setAPicture(pic);
+        article.setACateId(cateId);
+        article.setAPicture(pictures);
         log.info(article.toString());
         // 更新
         blogArticleMapper.updateByPrimaryKey(article);

@@ -4,6 +4,7 @@
     <resultMap id="BaseResultMap" type="com.lhamster.domain.BlogArticle">
         <id column="a_id" property="aId" jdbcType="INTEGER"/>
         <result column="a_title" property="aTitle" jdbcType="VARCHAR"/>
+        <result column="a_desc" property="aDesc" jdbcType="VARCHAR"/>
         <result column="a_createtime" property="aCreatetime" jdbcType="TIMESTAMP"/>
         <result column="a_likecount" property="aLikecount" jdbcType="INTEGER"/>
         <result column="a_visitcount" property="aVisitcount" jdbcType="INTEGER"/>
@@ -12,34 +13,35 @@
         <result column="a_cate_id" property="aCateId" jdbcType="INTEGER"/>
         <result column="a_user_id" property="aUserId" jdbcType="INTEGER"/>
         <result column="a_content" property="aContent" jdbcType="LONGVARCHAR"/>
+        <!--级联分类-->
+        <association property="cate" column="a_cate_id" javaType="com.lhamster.domain.BlogCategory"
+                     select="com.lhamster.mapper.BlogCategoryMapper.selectByPrimaryKey"/>
+        <!--级联用户-->
+        <association property="user" column="a_user_id" javaType="com.lhamster.domain.BlogUser"
+                     select="com.lhamster.mapper.BlogUserMapper.selectById"/>
     </resultMap>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from blog_article
     where a_id = #{aId,jdbcType=INTEGER}
   </delete>
     <insert id="insert" parameterType="com.lhamster.domain.BlogArticle">
-    insert into blog_article (a_id, a_title, a_createtime, 
+    insert into blog_article (a_id, a_title, a_desc, a_createtime,
       a_likecount, a_visitcount, a_status, 
       a_picture, a_cate_id, a_user_id, 
       a_content)
-    values (#{aId,jdbcType=INTEGER}, #{aTitle,jdbcType=VARCHAR}, #{aCreatetime,jdbcType=TIMESTAMP}, 
+    values (#{aId,jdbcType=INTEGER}, #{aTitle,jdbcType=VARCHAR}, #{aDesc,jdbcType=VARCHAR},#{aCreatetime,jdbcType=TIMESTAMP},
       #{aLikecount,jdbcType=INTEGER}, #{aVisitcount,jdbcType=INTEGER}, #{aStatus,jdbcType=BIT}, 
       #{aPicture,jdbcType=VARCHAR}, #{aCateId,jdbcType=INTEGER}, #{aUserId,jdbcType=INTEGER}, 
       #{aContent,jdbcType=LONGVARCHAR})
   </insert>
     <update id="updateByPrimaryKey" parameterType="com.lhamster.domain.BlogArticle">
         update blog_article
-        <set>
-            <if test="aTitle != null and aTitle != ''">
-                a_title = #{aTitle},
-            </if>
-            <if test="aContent != null and aContent != ''">
-                a_content = #{aContent},
-            </if>
-            <if test="aPicture != null and aPicture != ''">
-                a_picture = #{aPicture}
-            </if>
-        </set>
+        set
+            a_desc = #{aDesc},
+            a_title = #{aTitle},
+            a_content = #{aContent},
+            a_cate_id = #{aCateId},
+            a_picture = #{aPicture}
         where a_id = #{aId}
     </update>
     <update id="setArticleStatus">
@@ -58,13 +60,13 @@
         where a_id = #{id}
     </update>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-    select a_id, a_title, a_createtime, a_likecount, a_visitcount, a_status, a_picture, 
+    select a_id, a_title, a_desc, a_createtime, a_likecount, a_visitcount, a_status, a_picture,
     a_cate_id, a_user_id, a_content
     from blog_article
     where a_id = #{aId,jdbcType=INTEGER}
   </select>
     <select id="selectAll" resultMap="BaseResultMap">
-        select a_id, a_title, a_createtime, a_likecount, a_visitcount, a_status, a_picture,
+        select a_id, a_title, a_desc, a_createtime, a_likecount, a_visitcount, a_status, a_picture,
         a_cate_id, a_user_id, a_content
         from blog_article
         <where>

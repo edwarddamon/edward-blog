@@ -19,6 +19,7 @@ public class BlogUser {
     private String uHeadpicture;
     private Boolean uSex;
     private String uPhone;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date uBirthday;
     private Boolean uAdmin;

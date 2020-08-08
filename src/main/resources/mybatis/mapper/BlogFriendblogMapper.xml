@@ -49,10 +49,10 @@
         select f_id, f_name, f_url, f_status, f_backinfo, f_friendblogtime, f_user_id
         from blog_friendblog
         <where>
-            <if test="id != null">
+            <if test="id != 0">
                 f_id = #{id}
             </if>
-            <if test="status != null">
+            <if test="status != 3">
                 and f_status = #{status}
             </if>
             <if test="userId != null">

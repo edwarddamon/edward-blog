@@ -189,9 +189,10 @@ public class UserController {
                     String token = JwtTokenUtil.createJWT(user.getUId().toString(), user.getUNickname(), "user", audience);
                     log.info(user.toString());
                     log.info("登陆成功===" + token);
-                    // 将token存入响应头返回给前端
-                    response.setHeader(JwtTokenUtil.AUTH_HEADER_KEY, JwtTokenUtil.TOKEN_PREFIX + token);
-                    return new Result(ResultCode.USER_LOGIN_SUCCESS);
+                    Map<String, String> map = new HashMap<>();
+                    map.put(JwtTokenUtil.AUTH_HEADER_KEY, JwtTokenUtil.TOKEN_PREFIX + token);
+                    // 将token存入响应体中返回给前端
+                    return new Result<>(ResultCode.USER_LOGIN_SUCCESS, map);
                 } else { // 登录失败
                     return new Result(ResultCode.USER_LOGIN_ERROR);
                 }
@@ -365,6 +366,10 @@ public class UserController {
      */
     @GetMapping("/user-back")
     public Result<List<BlogUser>> users(QueryVo vo) {
+        if (StringUtils.isEmpty(vo.getPageNum()) || StringUtils.isEmpty(vo.getPageSize())) {
+            throw new ResultException(ResultCode.EMPTY);
+        }
+        log.info(vo.toString());
         return userService.queryAll(vo);
     }
 
