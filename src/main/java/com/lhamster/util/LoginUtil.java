@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 @Slf4j
 public class LoginUtil {
-    public static final String QQ_appId = "101892852";
+    public static final String QQ_appId = "xxxxxxxxx";
 
     /**
      * 获取用户信息

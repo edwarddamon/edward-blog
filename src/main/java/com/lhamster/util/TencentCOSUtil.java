@@ -25,7 +25,8 @@ public class TencentCOSUtil {
     // https://cloud.tencent.com/document/product/436/6224，根据自己创建的存储桶选择地区
     private static ClientConfig clientConfig = new ClientConfig(new Region("ap-nanjing"));
 
-    private static String prefixUrl = "https://lhamster-edward-blog-1302533254.cos.ap-nanjing.myqcloud.com";
+    // 你的腾讯云存储桶前缀
+    private static String prefixUrl = "https://cloud.tencent.com/document/product/";
 
     /**
      * @describe 上传文件的方法

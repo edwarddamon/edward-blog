@@ -7,33 +7,33 @@ public class Constants {
     /**
      * 短信 appid
      */
-    public static final String SMSAPPID = "1400396638";
+    public static final String SMSAPPID = "xxxxxxx";
     /**
      * 存储桶的名称
      */
-    public static final String bucketName = "lhamster-edward-blog-1302533254";
+    public static final String bucketName = "xxxxxxxx";
     /**
      * 腾讯云账户密钥对: secretId
      */
-    public static final String SMSSECREID = "AKIDrTqxoPq1ScXBZhbWPq22vJRNXZNvIVxo";
+    public static final String SMSSECREID = "xxxxxxxxxx";
     /**
      * 腾讯云账户密钥对: secretKey
      */
-    public static final String SMSSECREKEY = "kocASnJBtNhFk4piMArmoZx8CWhbrVxO";
+    public static final String SMSSECREKEY = "xxxxxxxxxx";
     /**
      * SmsSdkAppid
      */
-    public static final String SMSSDKAPPID = "1400396638";
+    public static final String SMSSDKAPPID = "xxxxxxx";
     /**
-     * sms sign   : sms签名
+     * sms sign   : sms签名 这里是签名名称不是id！！！
      */
-    public static final String SMSSIGN = "小仓鼠网";
+    public static final String SMSSIGN = "xxxxxxxx";
     /**
      * sms 注册短信模板id:
      */
-    public static final String SMSTEMPREGISTERLATEID = "659656";
+    public static final String SMSTEMPREGISTERLATEID = "xxxxxx";
     /**
      * sms 修改密码短信模板id:
      */
-    public static final String SMSTEMPCHANGEPWDLATEID = "659657";
+    public static final String SMSTEMPCHANGEPWDLATEID = "xxxxxxx";
 }
