@@ -3,7 +3,8 @@
 
 ## 1.项目地址
 ### 项目预览地址：
-前台：www.lhamster.cn
+前台：[www.lhamster.cn](http://www.lhamster.cn)
+
 后台管理系统：后台博客管理的地址就不给你们了哈，怕有大牛破解密码
 
 ### 项目源码地址：
