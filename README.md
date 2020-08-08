@@ -6,10 +6,12 @@
 前台：www.lhamster.cn
 后台管理系统：后台博客管理的地址就不给你们了哈，怕有大牛破解密码
 
-### 项目源码：
+### 项目源码地址：
 前端前台：https://gitee.com/edwarddamon/edward-blog-front
+
 前端后台：https://gitee.com/edwarddamon/edward-blog-back
-后端服务器：
+
+后端服务器：https://github.com/edwarddamon/edward-blog/tree/center （这里一定记得从center分支下载，master出问题之前push不了，切记切记！！！）
 
 ### 项目使用：
 - 服务器端的application.yml中修改mysql账号密码和redis的ip
