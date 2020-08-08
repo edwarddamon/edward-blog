@@ -11,7 +11,7 @@
 
 前端后台：https://gitee.com/edwarddamon/edward-blog-back
 
-后端服务器：https://github.com/edwarddamon/edward-blog/tree/center （这里一定记得从center分支下载，master出问题之前push不了，切记切记！！！）
+后端服务器：https://github.com/edwarddamon/edward-blog/tree/center （<font color='red'>这里一定记得从center分支下载，master出问题之前push不了，切记切记！！！</font>）
 
 ### 项目使用：
 - 服务器端的application.yml中修改mysql账号密码和redis的ip
