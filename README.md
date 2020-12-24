@@ -2,10 +2,6 @@
 介绍：个人博客系统，前端包括前台和后台，前台和后台分别采用vue-cli脚手架实现的两个项目；后端采用springboot实现，前后端采用resutful风格的API接口，json传递数据。
 
 ## 1.项目地址
-### 项目预览地址：
-前台：[www.lhamster.cn](http://www.lhamster.cn)
-
-后台管理系统：后台博客管理的地址就不给你们了哈，怕有大牛破解密码
 
 ### 项目源码地址：
 前端前台：https://gitee.com/edwarddamon/edward-blog-front
