@@ -2,6 +2,6 @@
 <Configuration status="INFO" monitorInterval="30" additivity="false">
     <Properties>
         <!-- 日志路径 -->
-        <Property name="LOG_HOME">${env:LOG_HOME:-D:\remote_logs}</Property>
+        <Property name="LOG_HOME">D:\remote_logs</Property>
     </Properties>
 </Configuration>
